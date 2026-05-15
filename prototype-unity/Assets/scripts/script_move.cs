@@ -24,7 +24,7 @@ public class script_move : MonoBehaviour
             if (clavier.dKey.isPressed) moveX = 1;
             if (clavier.aKey.isPressed) moveX = -1;
             
-            transform.position += new Vector3(moveX, 0, 0) * 5f * Time.deltaTime;
+            transform.position += new Vector3(moveX, 0, 0) * vitesse * Time.deltaTime;
         }
     }
 }
