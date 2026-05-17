@@ -15,10 +15,17 @@ public class script_move : MonoBehaviour
     public float forceSaut;
     private Rigidbody2D rb;
 
+
+
     public float valeur_longueurSaut;
     private float longueurSaut;
     private bool estEnSaut = false;
+
+
     private bool regardeDroite = true;
+
+
+    private bool estAuSol = false;
 
 
 
@@ -45,16 +52,17 @@ public class script_move : MonoBehaviour
             if (clavier.dKey.isPressed) moveX = 1;
             if (clavier.aKey.isPressed) moveX = -1;
             
-            transform.position += new UnityEngine.Vector3(moveX, 0, 0) * vitesse * Time.deltaTime;
-
             
+
+            rb.linearVelocity = new UnityEngine.Vector2(moveX * vitesse, rb.linearVelocity.y);
             
             
             //saut
-            if (clavier.spaceKey.wasPressedThisFrame)
+            if (clavier.spaceKey.wasPressedThisFrame && estAuSol)
             {
                 rb.linearVelocity = new UnityEngine.Vector2(0, forceSaut);
                 estEnSaut = true;
+                estAuSol = false;
             } 
             
             if (estEnSaut == true && clavier.spaceKey.isPressed)
@@ -86,8 +94,21 @@ public class script_move : MonoBehaviour
                 regardeDroite = false;
                 transform.localScale = new UnityEngine.Vector3(-1, 1, 1);
             }
+        }    
             
-            
+        
+
+
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Vérifie si l'objet touché a le tag "Sol"
+        if (collision.gameObject.CompareTag("Sol"))
+        {
+            estAuSol = true;
         }
+
+
+
     }
 }
