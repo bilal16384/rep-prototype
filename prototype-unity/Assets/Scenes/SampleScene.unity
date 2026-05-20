@@ -351,9 +351,10 @@ GameObject:
   - component: {fileID: 1021576647}
   - component: {fileID: 1021576646}
   - component: {fileID: 1021576648}
+  - component: {fileID: 1021576651}
   - component: {fileID: 1021576649}
   - component: {fileID: 1021576650}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: personnage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -447,8 +448,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   vitesse: 10
-  forceSaut: 20
-  valeur_longueurSaut: 0.2
 --- !u!50 &1021576649
 Rigidbody2D:
   serializedVersion: 5
@@ -522,6 +521,21 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 2.4}
   m_EdgeRadius: 0
+--- !u!114 &1021576651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1021576645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 815f4d91d45c26042bcb4eb6c6bfb229, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  valeur_longueurSaut: 0.2
+  estAuSol: 0
+  forceSaut: 20
 --- !u!1 &1917019063
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,9 +548,9 @@ GameObject:
   - component: {fileID: 1917019065}
   - component: {fileID: 1917019064}
   - component: {fileID: 1917019067}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: terrain
-  m_TagString: Sol
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

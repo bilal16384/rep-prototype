@@ -12,20 +12,15 @@ public class script_move : MonoBehaviour
     
     
     public float vitesse;
-    public float forceSaut;
+
     private Rigidbody2D rb;
 
-
-
-    public float valeur_longueurSaut;
-    private float longueurSaut;
-    private bool estEnSaut = false;
-
+    private BoxCollider2D boxCollider;
 
     private bool regardeDroite = true;
 
 
-    private bool estAuSol = false;
+    
 
 
 
@@ -35,51 +30,25 @@ public class script_move : MonoBehaviour
     {
         transform.position = new UnityEngine.Vector3(0, 0, 0);
         rb = GetComponent<Rigidbody2D>();
-        longueurSaut = valeur_longueurSaut;
     }
     // Update is called once per frame
     void Update()
     {
         Keyboard clavier = Keyboard.current;
         
-
-
         // Vérifie si le clavier est disponible avant de lire les entrées
         if (clavier != null)
         {
+
+
             //déplacement horizontal
             float moveX = 0;
             if (clavier.dKey.isPressed) moveX = 1;
             if (clavier.aKey.isPressed) moveX = -1;
             
-            
-
             rb.linearVelocity = new UnityEngine.Vector2(moveX * vitesse, rb.linearVelocity.y);
             
             
-            //saut
-            if (clavier.spaceKey.wasPressedThisFrame && estAuSol)
-            {
-                rb.linearVelocity = new UnityEngine.Vector2(0, forceSaut);
-                estEnSaut = true;
-                estAuSol = false;
-            } 
-            
-            if (estEnSaut == true && clavier.spaceKey.isPressed)
-            {
-                rb.linearVelocity = new UnityEngine.Vector2(0, forceSaut);
-                longueurSaut -= Time.deltaTime;
-                if (longueurSaut <= 0)
-                {
-                    estEnSaut = false;
-                    longueurSaut = valeur_longueurSaut;
-                }
-            }
-            else if (estEnSaut == true && clavier.spaceKey.wasReleasedThisFrame)
-            {
-                estEnSaut = false;
-                longueurSaut = valeur_longueurSaut;
-            }
 
 
 
@@ -97,17 +66,6 @@ public class script_move : MonoBehaviour
         }    
             
         
-
-
-    }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        // Vérifie si l'objet touché a le tag "Sol"
-        if (collision.gameObject.CompareTag("Sol"))
-        {
-            estAuSol = true;
-        }
-
 
 
     }
