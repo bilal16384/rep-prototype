@@ -19,7 +19,8 @@ public class script_move : MonoBehaviour
 
     private bool regardeDroite = true;
 
-
+    public Key toucheDroite = Key.D;
+    public Key toucheGauche = Key.A;
     
 
 
@@ -43,8 +44,8 @@ public class script_move : MonoBehaviour
 
             //déplacement horizontal
             float moveX = 0;
-            if (clavier.dKey.isPressed) moveX = 1;
-            if (clavier.aKey.isPressed) moveX = -1;
+            if (clavier[toucheDroite].isPressed) moveX = 1;
+            if (clavier[toucheGauche].isPressed) moveX = -1;
             
             rb.linearVelocity = new UnityEngine.Vector2(moveX * vitesse, rb.linearVelocity.y);
             

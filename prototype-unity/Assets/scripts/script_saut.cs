@@ -15,8 +15,8 @@ public class script_saut : MonoBehaviour
     public float valeur_longueurSaut;
     private float longueurSaut;
     private bool estEnSaut = false;
-    [SerializeField] private bool estAuSol = false;
-
+    
+    public Key toucheSaut = Key.W;
     
     public float forceSaut;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -40,18 +40,18 @@ public class script_saut : MonoBehaviour
         if (clavier != null)
         {
             // vérifie si le personnage est au sol
-            if (clavier.spaceKey.wasPressedThisFrame && detectersol() == true)
+            if (clavier[toucheSaut].wasPressedThisFrame && detectersol() == true)
             {
 
-                Debug.Log("Saut validé ! État de estAuSol : " + estAuSol);
+                
 
 
                 rb.linearVelocity = new UnityEngine.Vector2(0, forceSaut);
                 estEnSaut = true;
-                estAuSol = false;
+                
             }
 
-            if (estEnSaut == true && clavier.spaceKey.isPressed)
+            if (estEnSaut == true && clavier [toucheSaut].isPressed)
             {
                 rb.linearVelocity = new UnityEngine.Vector2(0, forceSaut);
                 longueurSaut -= Time.deltaTime;
@@ -63,7 +63,7 @@ public class script_saut : MonoBehaviour
                 }
             }
         
-            else if (estEnSaut == true && clavier.spaceKey.wasReleasedThisFrame)
+            else if (estEnSaut == true && clavier[toucheSaut].wasReleasedThisFrame)
             {
                 estEnSaut = false;
                 longueurSaut = valeur_longueurSaut;
