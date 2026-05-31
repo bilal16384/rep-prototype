@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Sol
+  - personnage_1
+  - personnage_2
   layers:
   - Default
   - TransparentFX
