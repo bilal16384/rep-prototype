@@ -7,7 +7,7 @@ public class script_attaque_base : MonoBehaviour
     private BoxCollider2D boxCollider;
     private Rigidbody2D rb;
 
-    public Key toucheAttaqueBase = Key.C;
+    public Key toucheAttaqueBase;
     public float dégâtsAttaqueBase = 5f;
     public float rechargeAttaqueBase = 0.2f;
     private float duréeAttaqueBase = 0.05f;
@@ -31,7 +31,7 @@ public class script_attaque_base : MonoBehaviour
         Keyboard clavier = Keyboard.current;
         if (clavier != null)
         {
-            if (clavier[toucheAttaqueBase].isPressed && Time.time - tempsDernièreAttaque >= rechargeAttaqueBase)
+            if (clavier[toucheAttaqueBase].wasPressedThisFrame && Time.time - tempsDernièreAttaque >= rechargeAttaqueBase)
             {
                 attaqueBase();
                 tempsDernièreAttaque = Time.time;

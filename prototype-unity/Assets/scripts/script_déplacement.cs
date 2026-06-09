@@ -113,7 +113,11 @@ public class script_move : MonoBehaviour
         
     bool detectersol()
     {
-        UnityEngine.Vector2 tailleReduite = new UnityEngine.Vector2(boxCollider.bounds.size.x * 0.8f, boxCollider.bounds.size.y);
+        UnityEngine.Vector2 tailleReduite = new UnityEngine.Vector2
+        (
+            boxCollider.bounds.size.x * 0.8f,
+            boxCollider.bounds.size.y
+        );
         
         RaycastHit2D detecterSol = Physics2D.BoxCast(
             boxCollider.bounds.center,

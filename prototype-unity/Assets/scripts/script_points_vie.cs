@@ -23,7 +23,7 @@ public class script_points_vie : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (attaqueBaseScript.enAttaque && pointsVieActuels > 0 && boxColliderAttaqueBase.IsTouching(boxCollider))
+        if (attaqueBaseScript.enAttaque && boxColliderAttaqueBase.IsTouching(boxCollider))
         {
             pointsVieActuels -= attaqueBaseScript.dégâtsAttaqueBase;
             attaqueBaseScript.enAttaque = false; // Réinitialise l'état d'attaque

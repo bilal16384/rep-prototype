@@ -129,7 +129,8 @@ GameObject:
   m_Component:
   - component: {fileID: 468438988}
   - component: {fileID: 468438989}
-  m_Layer: 6
+  - component: {fileID: 468438990}
+  m_Layer: 0
   m_Name: attaque de base2
   m_TagString: personnage_2
   m_Icon: {fileID: 0}
@@ -197,6 +198,22 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &468438990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468438987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f81c075d8003b1846ac01b0f533d511a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::script_attaque_base
+  toucheAttaqueBase: 7
+  "d\xE9g\xE2tsAttaqueBase": 5
+  rechargeAttaqueBase: 0.2
+  enAttaque: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,6 +614,7 @@ GameObject:
   - component: {fileID: 936584876}
   - component: {fileID: 936584875}
   - component: {fileID: 936584881}
+  - component: {fileID: 936584882}
   m_Layer: 6
   m_Name: personnage2
   m_TagString: personnage_2
@@ -767,6 +785,24 @@ MonoBehaviour:
   pointsVieMax: 100
   attaqueBaseScript: {fileID: 1347203938}
   boxColliderAttaqueBase: {fileID: 1347203937}
+--- !u!114 &936584882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 936584874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcf3a6b7832b0be4980d4d4e7847e807, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::script_move
+  toucheDroite: 26
+  toucheGauche: 24
+  valeur_longueurSaut: 0.2
+  toucheSaut: 23
+  forceSaut: 20
+  vitesse: 10
 --- !u!1 &1021576645
 GameObject:
   m_ObjectHideFlags: 0
@@ -778,9 +814,9 @@ GameObject:
   - component: {fileID: 1021576647}
   - component: {fileID: 1021576646}
   - component: {fileID: 1021576648}
-  - component: {fileID: 1021576652}
   - component: {fileID: 1021576649}
   - component: {fileID: 1021576650}
+  - component: {fileID: 1021576651}
   m_Layer: 6
   m_Name: personnage1
   m_TagString: personnage_1
@@ -879,7 +915,7 @@ MonoBehaviour:
   toucheGauche: 15
   valeur_longueurSaut: 0.2
   toucheSaut: 37
-  forceSaut: 20
+  forceSaut: 23
   vitesse: 10
 --- !u!50 &1021576649
 Rigidbody2D:
@@ -925,7 +961,7 @@ BoxCollider2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_LayerOverridePriority: 0
+  m_LayerOverridePriority: -13
   m_ForceSendLayers:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -954,7 +990,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 2.4}
   m_EdgeRadius: 0
---- !u!114 &1021576652
+--- !u!114 &1021576651
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -963,13 +999,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1021576645}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f81c075d8003b1846ac01b0f533d511a, type: 3}
+  m_Script: {fileID: 11500000, guid: 706ea21dd3f33b548b43a4922d9c653e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::script_attaque_base
-  toucheAttaqueBase: 17
-  "d\xE9g\xE2tsAttaqueBase": 5
-  rechargeAttaqueBase: 0.2
-  enAttaque: 0
+  m_EditorClassIdentifier: Assembly-CSharp::script_points_vie
+  pointsVieMax: 100
+  attaqueBaseScript: {fileID: 468438990}
+  boxColliderAttaqueBase: {fileID: 468438989}
 --- !u!1 &1246226693
 GameObject:
   m_ObjectHideFlags: 0
@@ -1147,7 +1182,7 @@ GameObject:
   - component: {fileID: 1347203936}
   - component: {fileID: 1347203937}
   - component: {fileID: 1347203938}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: attaque de base1
   m_TagString: personnage_1
   m_Icon: {fileID: 0}
@@ -1228,7 +1263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   toucheAttaqueBase: 17
-  "d\xE9g\xE2tsAttaqueBase": 5
+  "d\xE9g\xE2tsAttaqueBase": 50
   rechargeAttaqueBase: 0.2
   enAttaque: 0
 --- !u!1 &1917019063
