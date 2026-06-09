@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 962730925fb9872498d33094ade522e6
+guid: 56674f062d219d7418a5c4719c1147ff
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7651632146020693346
-    second: animation course1_0
+      213: -5615129518048492047
+    second: course-f1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: animation course1_0
+      name: course-f1_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 71
         y: 0
-        width: 256
-        height: 256
+        width: 132
+        height: 240
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 265f58f85ee003a60800000000000000
-      internalID: 7651632146020693346
+      spriteID: 1f5c8ec147d0312b0800000000000000
+      internalID: -5615129518048492047
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      animation course1_0: 7651632146020693346
+      course-f1_0: -5615129518048492047
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
