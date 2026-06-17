@@ -4,11 +4,19 @@ using UnityEngine.InputSystem;
 
 public class script_attaque_base : MonoBehaviour
 {
+
+    //hitboxes
     private BoxCollider2D boxCollider;
     private Rigidbody2D rb;
+    [SerializeField] private BoxCollider2D boxColliderEnnemi;
+    [SerializeField] private script_points_vie pointsVieScriptEnnemi;
 
+    //touches
     public Key toucheAttaqueBase;
-    public float dégâtsAttaqueBase = 5f;
+
+
+    //variables d'attaque
+    public float dégâtsAttaqueBase;
     public float rechargeAttaqueBase = 0.2f;
     private float duréeAttaqueBase = 0.05f;
     private float tempsDernièreAttaque = 0f;
@@ -27,7 +35,7 @@ public class script_attaque_base : MonoBehaviour
     {
 
 
-
+        //attaque de base
         Keyboard clavier = Keyboard.current;
         if (clavier != null)
         {
@@ -37,7 +45,6 @@ public class script_attaque_base : MonoBehaviour
                 tempsDernièreAttaque = Time.time;
                 
             }
-
             if (enAttaque)
             {
                 if (Time.time - tempsDernièreAttaque >= duréeAttaqueBase)
@@ -45,13 +52,19 @@ public class script_attaque_base : MonoBehaviour
                     finAttaqueBase();
                 }
             }
-
+            if (enAttaque && boxCollider.IsTouching(boxColliderEnnemi))
+            {
+                pointsVieScriptEnnemi.pointsVieActuels -= dégâtsAttaqueBase;
+                Debug.Log("Points de vie de l'ennemi : " + pointsVieScriptEnnemi.pointsVieActuels);
+                enAttaque = false; // Réinitialise l'état d'attaque après avoir infligé des dégâts
+            }
 
 
         }
-        
-        
     }
+
+
+
 
     void attaqueBase()
     {

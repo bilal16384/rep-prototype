@@ -3,10 +3,10 @@ using UnityEngine;
 public class script_points_vie : MonoBehaviour
 {
     public float pointsVieMax = 100f;
-    private float pointsVieActuels;
+    public float pointsVieActuels;
     private bool estMort = false;
 
-    
+
 
     private Collider2D boxCollider;
 
@@ -23,12 +23,7 @@ public class script_points_vie : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (attaqueBaseScript.enAttaque && boxColliderAttaqueBase.IsTouching(boxCollider))
-        {
-            pointsVieActuels -= attaqueBaseScript.dégâtsAttaqueBase;
-            attaqueBaseScript.enAttaque = false; // Réinitialise l'état d'attaque
-            Debug.Log("Points de vie actuels : " + pointsVieActuels);
-        }
+
 
         if (pointsVieActuels <= 0 && !estMort)
         {
