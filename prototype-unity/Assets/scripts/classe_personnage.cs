@@ -6,13 +6,20 @@ public class classe_personnage : MonoBehaviour
 
 
     //attribus des personnages
-    [SerializeField] protected float pointsVieMax;
+    [SerializeField] protected string nom;
 
 
+
+
+    //vie
+    [SerializeField] protected int pointsVieMax;
+
+    //déplacement
     [SerializeField] protected float vitesse;
     [SerializeField] protected float forceSaut;
     [SerializeField] protected float valeur_longueurSaut;
     [SerializeField] protected Vector3 positionDépart;
+    
 
 
 
@@ -26,10 +33,12 @@ public class classe_personnage : MonoBehaviour
 
 
     //variables de jeu
+
+    //vie
     protected float pointsVieActuels;
     protected bool estMort = false;
 
-
+    //déplacement
     protected bool regardeDroite = true;
     protected float longueurSaut;
     protected bool estEnSaut = false;
@@ -39,34 +48,26 @@ public class classe_personnage : MonoBehaviour
     protected Rigidbody2D rb;
     protected BoxCollider2D boxCollider;
 
-
-
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
-        pointsVieActuels = pointsVieMax;
-
-        transform.position = positionDépart;
-        
-        longueurSaut = valeur_longueurSaut;
-        
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
-
         
+        transform.position = positionDépart;   // Position de départ à défiir selon les règles...
 
+        longueurSaut = valeur_longueurSaut;
     }
 
-    // Update is called once per frame
+
+
     protected virtual void Update()
     {
-        //vérifie si le clavier est disponible avant de lire les entrées
         Keyboard clavier = Keyboard.current;
         
-        if (clavier !=null)
+        // Vérifie si le clavier est disponible avant de lire les entrées
+        if (clavier != null)
         {
+
 
             //déplacement horizontal
             float moveX = 0;
@@ -75,6 +76,8 @@ public class classe_personnage : MonoBehaviour
             
             rb.linearVelocity = new UnityEngine.Vector2(moveX * vitesse, rb.linearVelocity.y);
             
+            
+
 
 
             //direction du personnage
@@ -88,6 +91,8 @@ public class classe_personnage : MonoBehaviour
                 regardeDroite = false;
                 transform.localScale = new UnityEngine.Vector3(-1, 1, 1);
             }
+
+
 
 
             // saut
@@ -115,23 +120,29 @@ public class classe_personnage : MonoBehaviour
                 estEnSaut = false;
                 longueurSaut = valeur_longueurSaut;
             }
-
-
-
-
-
-
-
-
-
-        }
-
-
-
-
+        }    
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //méthodes
     protected virtual void mourir()
     {
         estMort = true;
@@ -139,12 +150,13 @@ public class classe_personnage : MonoBehaviour
     }
     
     
-    protected virtual void prendreDégâts(float dégâts)
+    protected virtual void prendreDégâts(int dégâts)
     {
         pointsVieActuels -= dégâts;
         if (pointsVieActuels <= 0 && !estMort)
         {
             mourir();
+            Debug.Log("Le personnage est mort.");
         }
         else
         {
