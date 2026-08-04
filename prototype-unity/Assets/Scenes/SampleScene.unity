@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 8519656}
   - component: {fileID: 8519655}
   - component: {fileID: 8519654}
+  - component: {fileID: 8519659}
   m_Layer: 6
   m_Name: personnage-test
   m_TagString: personnage_1
@@ -160,7 +161,6 @@ MonoBehaviour:
   toucheDroite: 18
   toucheGauche: 15
   toucheSaut: 37
-  toucheAttaqueBase: 17
 --- !u!61 &8519655
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -309,6 +309,28 @@ Transform:
   - {fileID: 795646919}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &8519659
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8519653}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4c928b34f16e02940a7b530029fb50d2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &468438987
 GameObject:
   m_ObjectHideFlags: 0
@@ -803,7 +825,7 @@ GameObject:
   m_Component:
   - component: {fileID: 795646919}
   - component: {fileID: 795646921}
-  - component: {fileID: 795646920}
+  - component: {fileID: 795646922}
   m_Layer: 0
   m_Name: attaque1
   m_TagString: personnage_1
@@ -826,24 +848,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8519658}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &795646920
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 795646918}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f81c075d8003b1846ac01b0f533d511a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  boxColliderEnnemi: {fileID: 936584875}
-  pointsVieScriptEnnemi: {fileID: 936584881}
-  toucheAttaqueBase: 17
-  "d\xE9g\xE2tsAttaqueBase": 50
-  rechargeAttaqueBase: 0.2
-  enAttaque: 0
 --- !u!61 &795646921
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -878,7 +882,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 1, y: 0.25}
+  m_Offset: {x: 0.5, y: 0.25}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -888,8 +892,26 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.5, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &795646922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795646918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f81c075d8003b1846ac01b0f533d511a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::script_attaque_base
+  boxColliderEnnemi: {fileID: 0}
+  pointsVieScriptEnnemi: {fileID: 0}
+  toucheAttaqueBase: 0
+  "d\xE9g\xE2tsAttaqueBase": 0
+  rechargeAttaqueBase: 0.2
+  enAttaque: 0
 --- !u!1 &936584874
 GameObject:
   m_ObjectHideFlags: 0
@@ -1294,7 +1316,6 @@ MonoBehaviour:
   vitesseProjectileX: 0
   "d\xE9g\xE2tsProjectile": 0
   vitesseProjectileY: 0
-  boxColliderEnnemi: {fileID: 0}
 --- !u!212 &1485078486
 SpriteRenderer:
   serializedVersion: 2

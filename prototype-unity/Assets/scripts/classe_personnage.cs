@@ -28,7 +28,7 @@ public class classe_personnage : MonoBehaviour
     [SerializeField] protected Key toucheDroite;
     [SerializeField] protected Key toucheGauche;   
     [SerializeField] protected Key toucheSaut;
-    [SerializeField] protected Key toucheAttaqueBase;
+
 
 
 
@@ -44,7 +44,7 @@ public class classe_personnage : MonoBehaviour
     protected bool estEnSaut = false;
     
     
-    
+    //hitbox
     protected Rigidbody2D rb;
     protected BoxCollider2D boxCollider;
 
