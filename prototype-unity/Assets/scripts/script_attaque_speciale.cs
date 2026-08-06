@@ -48,8 +48,7 @@ public class script_attaque_speciale : MonoBehaviour
                 if (Time.time - tempsDernièreAttaque >= duréeAttaqueSpeciale)
                 {
                     finAttaqueSpeciale();
-
-
+                    attaqueProjectile();
                 }
             }
 

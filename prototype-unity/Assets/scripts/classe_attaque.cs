@@ -76,4 +76,12 @@ public class classe_attaque : MonoBehaviour
     {
         
     }
+
+
+    void infligerDégâts(GameObject cible, int dégâts)
+    {
+        // Logique pour infliger des dégâts à la cible
+        
+        Debug.Log($"Inflige {dégâts} points de dégâts à {cible.name} !");
+    }
 }

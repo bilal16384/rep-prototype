@@ -30,6 +30,9 @@ public class classe_personnage : MonoBehaviour
     [SerializeField] protected Key toucheSaut;
 
 
+    //animation
+    [SerializeField] protected Animator animator;
+
 
 
     //variables de jeu
@@ -76,6 +79,10 @@ public class classe_personnage : MonoBehaviour
             
             rb.linearVelocity = new UnityEngine.Vector2(moveX * vitesse, rb.linearVelocity.y);
             
+            //calcul de la vitesse actuelle pour l'animation
+            float vitesseActuelle = Mathf.Abs(rb.linearVelocity.x);
+            animator.SetFloat("Vitesse", vitesseActuelle);
+
             
 
 

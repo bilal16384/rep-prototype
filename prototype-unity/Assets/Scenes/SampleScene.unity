@@ -161,6 +161,7 @@ MonoBehaviour:
   toucheDroite: 18
   toucheGauche: 15
   toucheSaut: 37
+  animator: {fileID: 8519659}
 --- !u!61 &8519655
 BoxCollider2D:
   m_ObjectHideFlags: 0
