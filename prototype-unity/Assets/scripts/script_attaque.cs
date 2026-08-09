@@ -1,12 +1,11 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
-public class script_p1 : classe_personnage
+
+public class script_attaque : classe_attaque
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Start()
-    { 
+    {
         base.Start();
-        nom = "Personnage 1";
     }
 
     // Update is called once per frame
@@ -15,3 +14,5 @@ public class script_p1 : classe_personnage
         base.Update();
     }
 }
+
+

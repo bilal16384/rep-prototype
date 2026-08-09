@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,7 +15,6 @@ public class classe_attaque : MonoBehaviour
 
     //variables d'attaque
     protected float duréeAttaqueBase = 0.05f;
-    protected float duréeAttaqueSpeciale = 0.05f;
     protected bool enAttaque = false;
     protected float tempsDernièreAttaque = 0f;
 
@@ -28,7 +28,7 @@ public class classe_attaque : MonoBehaviour
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    protected virtual void Start()
     {
         enAttaque = false;
         boxCollider = GetComponent<BoxCollider2D>();
@@ -36,7 +36,7 @@ public class classe_attaque : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         Keyboard clavier = Keyboard.current;
         if (clavier != null)
@@ -58,13 +58,13 @@ public class classe_attaque : MonoBehaviour
         }
     }
 
-    void attaqueBase()
+    protected virtual void attaqueBase()
     {
         enAttaque = true;
         Debug.Log("Attaque de base effectuée !");
     }
 
-    void finAttaqueBase()
+    protected virtual void finAttaqueBase()
     {
         enAttaque = false;
         Debug.Log("Fin de l'attaque de base.");
@@ -72,16 +72,41 @@ public class classe_attaque : MonoBehaviour
 
 
 
-    void onTriggerEnter2D(Collider2D collider2D)
+    protected virtual void OnTriggerStay2D(Collider2D collision)
     {
+        if(enAttaque)
+        {
+            
+            // Ignore les collisions avec le parent
+            if (transform.parent != null && collision.transform == transform.parent)
+            {
+                Debug.Log("Collision ignorée avec le parent : " + collision.gameObject.name);
+                return; 
+            }
         
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Personnage"))
+            {
+                GameObject cible = collision.gameObject;
+                {
+                    infligerDégâts(cible, dégâtsAttaqueBase);
+                    enAttaque = false; // Fin de l'attaque après avoir infligé des dégâts :)
+                }
+            }
+        }
     }
 
 
-    void infligerDégâts(GameObject cible, int dégâts)
+    protected virtual void infligerDégâts(GameObject cible, int dégâts)
     {
-        // Logique pour infliger des dégâts à la cible
-        
-        Debug.Log($"Inflige {dégâts} points de dégâts à {cible.name} !");
+        script_personnage personnageCible = cible.GetComponent<script_personnage>();
+        if (personnageCible != null)
+        {
+            personnageCible.prendreDégâts(dégâts);
+            Debug.Log("Dégâts infligés à " + cible.name + " : " + dégâts);
+        }
+        else
+        {
+            Debug.Log("Aucun script_personnage trouvé sur " + cible.name);
+        }
     }
 }

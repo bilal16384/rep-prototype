@@ -55,6 +55,8 @@ public class classe_personnage : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
+        pointsVieActuels = pointsVieMax;
+        estMort = false;
         
         transform.position = positionDépart;   // Position de départ à défiir selon les règles...
 
@@ -131,39 +133,20 @@ public class classe_personnage : MonoBehaviour
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //méthodes
     protected virtual void mourir()
     {
         estMort = true;
-        Debug.Log("Le personnage est mort.");
     }
     
     
-    protected virtual void prendreDégâts(int dégâts)
+    public virtual void prendreDégâts(int dégâts)
     {
         pointsVieActuels -= dégâts;
         if (pointsVieActuels <= 0 && !estMort)
         {
             mourir();
-            Debug.Log("Le personnage est mort.");
+            Debug.Log("Le personnage" + nom + " est mort." + " Points de vie actuels : " + pointsVieActuels);
         }
         else
         {
