@@ -76,7 +76,6 @@ public class classe_attaque : MonoBehaviour
     {
         if(enAttaque)
         {
-            
             // Ignore les collisions avec le parent
             if (transform.parent != null && collision.transform == transform.parent)
             {
@@ -89,7 +88,7 @@ public class classe_attaque : MonoBehaviour
                 GameObject cible = collision.gameObject;
                 {
                     infligerDégâts(cible, dégâtsAttaqueBase);
-                    enAttaque = false; // Fin de l'attaque après avoir infligé des dégâts :)
+                    finAttaqueBase(); // Fin de l'attaque après avoir infligé des dégâts :)
                 }
             }
         }
