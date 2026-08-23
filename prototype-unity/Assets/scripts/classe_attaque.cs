@@ -7,7 +7,9 @@ public class classe_attaque : MonoBehaviour
     //attribus de l'attaque de base
 
     [SerializeField] protected int dégâtsAttaqueBase;
+    [SerializeField] protected int dégâtsAttaqueSpéciale;
     [SerializeField] protected float rechargeAttaqueBase;
+    [SerializeField] protected float rechargeAttaqueSpéciale;
 
     //touches
     [SerializeField] protected Key toucheAttaqueBase;
@@ -15,7 +17,9 @@ public class classe_attaque : MonoBehaviour
 
     //variables d'attaque
     protected float duréeAttaqueBase = 0.05f;
+    protected float duréeAttaqueSpéciale = 0.05f;
     protected bool enAttaque = false;
+    protected bool enAttaqueSpéciale = false;
     protected float tempsDernièreAttaque = 0f;
 
     //hitbox
@@ -31,6 +35,7 @@ public class classe_attaque : MonoBehaviour
     protected virtual void Start()
     {
         enAttaque = false;
+        enAttaqueSpéciale = false;
         boxCollider = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
     }
@@ -72,16 +77,13 @@ public class classe_attaque : MonoBehaviour
 
 
 
+
     protected virtual void OnTriggerStay2D(Collider2D collision)
     {
         if(enAttaque)
         {
             // Ignore les collisions avec le parent
-            if (transform.parent != null && collision.transform == transform.parent)
-            {
-                Debug.Log("Collision ignorée avec le parent : " + collision.gameObject.name);
-                return; 
-            }
+            ignorerCollisionAvecParent(collision);
         
             if (collision.gameObject.layer == LayerMask.NameToLayer("Personnage"))
             {
@@ -94,6 +96,14 @@ public class classe_attaque : MonoBehaviour
         }
     }
 
+    protected void ignorerCollisionAvecParent(Collider2D collision)
+    {
+        if (transform.parent != null && collision.transform == transform.parent)
+        {
+            Debug.Log("Collision ignorée avec le parent : " + collision.gameObject.name);
+            return; 
+        }
+    }
 
     protected virtual void infligerDégâts(GameObject cible, int dégâts)
     {

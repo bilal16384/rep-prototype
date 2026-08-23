@@ -81,7 +81,7 @@ public class classe_personnage : MonoBehaviour
             
             rb.linearVelocity = new UnityEngine.Vector2(moveX * vitesse, rb.linearVelocity.y);
             
-            //calcul de la vitesse actuelle pour l'animation
+            //calcul de la vitesse actuelle pour l'animation (valeur absolue de la vitesse horizontale)
             float vitesseActuelle = Mathf.Abs(rb.linearVelocity.x);
             animator.SetFloat("Vitesse", vitesseActuelle);
 
