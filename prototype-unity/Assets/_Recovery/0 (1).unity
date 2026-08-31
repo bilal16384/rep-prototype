@@ -327,12 +327,11 @@ MonoBehaviour:
   vitesse: 10
   forceSaut: 20
   valeur_longueurSaut: 0.2
-  "positionD\xE9part": {x: -7, y: 2, z: 0}
+  "positionD\xE9part": {x: 0, y: 0, z: 0}
   toucheDroite: 18
   toucheGauche: 15
   toucheSaut: 37
   animator: {fileID: 8519659}
-  boxColliderEnnemi: {fileID: 890091278}
 --- !u!1 &230727298
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,9 +343,9 @@ GameObject:
   - component: {fileID: 230727299}
   - component: {fileID: 230727301}
   - component: {fileID: 230727302}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: attaque2
-  m_TagString: personnage_2
+  m_TagString: personnage_1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -430,13 +429,7 @@ MonoBehaviour:
   toucheAttaqueBase: 16
   toucheAttaqueSpeciale: 28
   "d\xE9g\xE2tsAttaqueSp\xE9cialeCoup": 0
-  prefabChaussure: {fileID: 0}
-  "quantit\xE9Projetiles": 3
   "d\xE9g\xE2tsAttaqueSp\xE9cialeProjectile": 0
-  vitesseProjectileX: 0
-  "dur\xE9eVieProjectile": 0
-  vitesseProjectileY: 0
-  variationVitesseProjectileY: 0.5
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -835,7 +828,7 @@ GameObject:
   - component: {fileID: 795646919}
   - component: {fileID: 795646921}
   - component: {fileID: 795646922}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: attaque1
   m_TagString: personnage_1
   m_Icon: {fileID: 0}
@@ -917,17 +910,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   "d\xE9g\xE2tsAttaqueBase": 20
   rechargeAttaqueBase: 0.2
-  "rechargeAttaqueSp\xE9ciale": 4
+  "rechargeAttaqueSp\xE9ciale": 0
   toucheAttaqueBase: 17
   toucheAttaqueSpeciale: 36
-  "d\xE9g\xE2tsAttaqueSp\xE9cialeCoup": 25
-  prefabChaussure: {fileID: 901685391943770130, guid: cdfa38355cfc2894299fb2a031afbb87, type: 3}
-  "quantit\xE9Projetiles": 3
-  "d\xE9g\xE2tsAttaqueSp\xE9cialeProjectile": 10
-  vitesseProjectileX: 10
-  "dur\xE9eVieProjectile": 3
-  vitesseProjectileY: 1
-  variationVitesseProjectileY: 3
+  "d\xE9g\xE2tsAttaqueSp\xE9cialeCoup": 0
+  "d\xE9g\xE2tsAttaqueSp\xE9cialeProjectile": 0
 --- !u!1 &890091275
 GameObject:
   m_ObjectHideFlags: 0
@@ -942,7 +929,7 @@ GameObject:
   - component: {fileID: 890091278}
   - component: {fileID: 890091277}
   - component: {fileID: 890091276}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: personnage2
   m_TagString: personnage_2
   m_Icon: {fileID: 0}
@@ -965,13 +952,12 @@ MonoBehaviour:
   pointsVieMax: 100
   vitesse: 10
   forceSaut: 20
-  valeur_longueurSaut: 1
+  valeur_longueurSaut: 0.2
   "positionD\xE9part": {x: 3, y: 0, z: 0}
   toucheDroite: 26
   toucheGauche: 24
   toucheSaut: 23
   animator: {fileID: 890091277}
-  boxColliderEnnemi: {fileID: 8519655}
 --- !u!95 &890091277
 Animator:
   serializedVersion: 7
@@ -1474,6 +1460,71 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1001 &882936886844935071
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 901685391943770130, guid: cdfa38355cfc2894299fb2a031afbb87, type: 3}
+      propertyPath: m_Name
+      value: prefab_chaussure
+      objectReference: {fileID: 0}
+    - target: {fileID: 2859500224676134036, guid: cdfa38355cfc2894299fb2a031afbb87, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2859500224676134036, guid: cdfa38355cfc2894299fb2a031afbb87, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2859500224676134036, guid: cdfa38355cfc2894299fb2a031afbb87, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2859500224676134036, guid: cdfa38355cfc2894299fb2a031afbb87, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2859500224676134036, guid: cdfa38355cfc2894299fb2a031afbb87, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2859500224676134036, guid: cdfa38355cfc2894299fb2a031afbb87, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2859500224676134036, guid: cdfa38355cfc2894299fb2a031afbb87, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2859500224676134036, guid: cdfa38355cfc2894299fb2a031afbb87, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2859500224676134036, guid: cdfa38355cfc2894299fb2a031afbb87, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2859500224676134036, guid: cdfa38355cfc2894299fb2a031afbb87, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4691707939193066626, guid: cdfa38355cfc2894299fb2a031afbb87, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 7482667652216324306, guid: 9416193bebb51ce459c5a267332f2312, type: 3}
+    - target: {fileID: 4691707939193066626, guid: cdfa38355cfc2894299fb2a031afbb87, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cdfa38355cfc2894299fb2a031afbb87, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1485,3 +1536,4 @@ SceneRoots:
   - {fileID: 1917019066}
   - {fileID: 660044040}
   - {fileID: 1246226697}
+  - {fileID: 882936886844935071}

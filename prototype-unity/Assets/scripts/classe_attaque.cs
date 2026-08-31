@@ -4,11 +4,11 @@ using UnityEngine.InputSystem;
 
 public class classe_attaque : MonoBehaviour
 {
-    //attribus de l'attaque de base
+    //attribus des attaques
 
     [SerializeField] protected int dégâtsAttaqueBase;
-    [SerializeField] protected int dégâtsAttaqueSpéciale;
     [SerializeField] protected float rechargeAttaqueBase;
+
     [SerializeField] protected float rechargeAttaqueSpéciale;
 
     //touches
@@ -17,10 +17,13 @@ public class classe_attaque : MonoBehaviour
 
     //variables d'attaque
     protected float duréeAttaqueBase = 0.05f;
-    protected float duréeAttaqueSpéciale = 0.05f;
+    protected float duréeAttaqueSpéciale = 0.02f;
     protected bool enAttaque = false;
     protected bool enAttaqueSpéciale = false;
     protected float tempsDernièreAttaque = 0f;
+    protected float tempsDernièreAttaqueSpéciale = 0f;
+    protected int layerPersonnageEnnemi = 0;
+
 
     //hitbox
     protected BoxCollider2D boxCollider;
@@ -30,14 +33,25 @@ public class classe_attaque : MonoBehaviour
 
 
 
+    protected virtual void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        boxCollider = GetComponent<BoxCollider2D>();
+    }
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
         enAttaque = false;
         enAttaqueSpéciale = false;
-        boxCollider = GetComponent<BoxCollider2D>();
-        rb = GetComponent<Rigidbody2D>();
+        tempsDernièreAttaque = -(rechargeAttaqueBase); // permet d'attaquer dès le début du jeu
+        tempsDernièreAttaqueSpéciale = -(rechargeAttaqueSpéciale); // permet d'attaquer dès le début du jeu
+        if(layerPersonnageEnnemi == 0)
+        {
+            définirLayerPersonnageEnnemi();
+        }
     }
 
     // Update is called once per frame
@@ -50,7 +64,17 @@ public class classe_attaque : MonoBehaviour
             {
                 attaqueBase();
                 tempsDernièreAttaque = Time.time;
-                
+            }
+
+            if (clavier[toucheAttaqueSpeciale].wasPressedThisFrame && Time.time - tempsDernièreAttaqueSpéciale >= rechargeAttaqueSpéciale)
+            {
+                attaqueSpéciale();
+                tempsDernièreAttaqueSpéciale = Time.time;
+            }
+            else if (clavier[toucheAttaqueSpeciale].wasPressedThisFrame)
+            {
+
+                Debug.Log("Attaque spéciale en recharge. Temps restant : " + (rechargeAttaqueSpéciale - (Time.time - tempsDernièreAttaqueSpéciale)) + " secondes.");
             }
         }
 
@@ -75,6 +99,17 @@ public class classe_attaque : MonoBehaviour
         Debug.Log("Fin de l'attaque de base.");
     }
 
+    protected virtual void attaqueSpéciale()
+    {
+        enAttaqueSpéciale = true;
+        Debug.Log("Attaque spéciale effectuée !");
+    }
+    protected virtual void finAttaqueSpéciale()
+    {
+        enAttaqueSpéciale = false;
+        Debug.Log("Fin de l'attaque spéciale.");
+    }
+
 
 
 
@@ -82,10 +117,7 @@ public class classe_attaque : MonoBehaviour
     {
         if(enAttaque)
         {
-            // Ignore les collisions avec le parent
-            ignorerCollisionAvecParent(collision);
-        
-            if (collision.gameObject.layer == LayerMask.NameToLayer("Personnage"))
+            if (collisionAvecEnnemi(collision))
             {
                 GameObject cible = collision.gameObject;
                 {
@@ -96,26 +128,31 @@ public class classe_attaque : MonoBehaviour
         }
     }
 
-    protected void ignorerCollisionAvecParent(Collider2D collision)
+    protected virtual bool collisionAvecEnnemi(Collider2D collision) // Vérifie si le GameObject avec lequel il y a collision est un ennemi
     {
-        if (transform.parent != null && collision.transform == transform.parent)
-        {
-            Debug.Log("Collision ignorée avec le parent : " + collision.gameObject.name);
-            return; 
-        }
+        return collision.gameObject.layer == layerPersonnageEnnemi;
     }
 
-    protected virtual void infligerDégâts(GameObject cible, int dégâts)
+    protected virtual bool infligerDégâts(GameObject cible, int dégâts) // Méthode pour infliger des dégâts à un GameObject cible
     {
-        script_personnage personnageCible = cible.GetComponent<script_personnage>();
-        if (personnageCible != null)
+        if (cible.TryGetComponent<In_prendre_dégâts>(out In_prendre_dégâts personnageCible)) // Vérifie si le GameObject cible a un composant qui implémente l'interface In_prendre_dégâts et l'assigne à la variable personnageCible
         {
             personnageCible.prendreDégâts(dégâts);
             Debug.Log("Dégâts infligés à " + cible.name + " : " + dégâts);
+            return true; // Retourne true si les dégâts ont été infligés avec succès
         }
         else
         {
-            Debug.Log("Aucun script_personnage trouvé sur " + cible.name);
+            Debug.Log("Aucune interface In_prendre_dégâts trouvé sur " + cible.name);
+            return false; // Retourne false si le GameObject cible n'a pas de composant qui implémente l'interface In_prendre_dégâts
         }
+    }
+
+    protected virtual void définirLayerPersonnageEnnemi()// Définit le layer du personnage ennemi en fonction du layer du personnage actuel
+    {
+        if (gameObject.layer == LayerMask.NameToLayer("Personnage_1")) // Layer "Personnage_1"
+            layerPersonnageEnnemi = LayerMask.NameToLayer("Personnage_2"); // Layer "Personnage_2"
+        else if (gameObject.layer == LayerMask.NameToLayer("Personnage_2")) // Layer "Personnage_2"
+            layerPersonnageEnnemi = LayerMask.NameToLayer("Personnage_1"); // Layer "Personnage_1"
     }
 }

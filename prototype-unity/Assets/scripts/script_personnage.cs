@@ -3,6 +3,10 @@ using UnityEngine.InputSystem;
 public class script_personnage : classe_personnage
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    protected override void Awake()
+    {
+        base.Awake();
+    }
     protected override void Start()
     { 
         base.Start();
