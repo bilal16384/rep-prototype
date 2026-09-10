@@ -331,8 +331,53 @@ MonoBehaviour:
   toucheDroite: 18
   toucheGauche: 15
   toucheSaut: 37
+  toucheDashBas: 33
   animator: {fileID: 8519659}
   boxColliderEnnemi: {fileID: 890091278}
+--- !u!1 &224425902
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 224425904}
+  - component: {fileID: 224425903}
+  m_Layer: 0
+  m_Name: Game Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &224425903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 224425902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac1d83bbdd7b9e84dae07ae13ecd4dc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+--- !u!4 &224425904
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 224425902}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &230727298
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,22 +466,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 230727298}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 603feabae12ed6f499ecb299fc5fe980, type: 3}
+  m_Script: {fileID: 11500000, guid: 3aaae796da04a6e46bd4d3966691aca2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::script_attaque
-  "d\xE9g\xE2tsAttaqueBase": 40
-  rechargeAttaqueBase: 1
-  "rechargeAttaqueSp\xE9ciale": 0
-  toucheAttaqueBase: 16
-  toucheAttaqueSpeciale: 28
-  "d\xE9g\xE2tsAttaqueSp\xE9cialeCoup": 0
-  prefabChaussure: {fileID: 0}
-  "quantit\xE9Projetiles": 3
-  "d\xE9g\xE2tsAttaqueSp\xE9cialeProjectile": 0
-  vitesseProjectileX: 0
-  "dur\xE9eVieProjectile": 0
-  vitesseProjectileY: 0
-  variationVitesseProjectileY: 0.5
+  m_EditorClassIdentifier: Assembly-CSharp::script_attaque_2
+  "d\xE9g\xE2tsAttaqueBase": 10
+  rechargeAttaqueBase: 0.2
+  "rechargeAttaqueSp\xE9ciale": 8
+  toucheAttaqueBase: 28
+  toucheAttaqueSpeciale: 27
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -817,12 +854,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 660044036}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8, y: -0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 12.40221, y: 0.44061, z: 0}
   m_LocalScale: {x: 5, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1154333577}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &795646918
 GameObject:
@@ -965,11 +1002,12 @@ MonoBehaviour:
   pointsVieMax: 100
   vitesse: 10
   forceSaut: 20
-  valeur_longueurSaut: 1
+  valeur_longueurSaut: 0.2
   "positionD\xE9part": {x: 3, y: 0, z: 0}
   toucheDroite: 26
   toucheGauche: 24
   toucheSaut: 23
+  toucheDashBas: 25
   animator: {fileID: 890091277}
   boxColliderEnnemi: {fileID: 8519655}
 --- !u!95 &890091277
@@ -1142,6 +1180,40 @@ Transform:
   - {fileID: 230727299}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1154333576
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1154333577}
+  m_Layer: 0
+  m_Name: Terrains
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1154333577
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154333576}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.40221, y: -0.44061, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1917019066}
+  - {fileID: 660044040}
+  - {fileID: 1246226697}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1246226693
 GameObject:
   m_ObjectHideFlags: 0
@@ -1301,12 +1373,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1246226693}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8, y: -0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.5977898, y: 0.44061, z: 0}
   m_LocalScale: {x: 5, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1154333577}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1917019063
 GameObject:
@@ -1421,12 +1493,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1917019063}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -5, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.40221, y: -4.55939, z: 0}
   m_LocalScale: {x: 10, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1154333577}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1917019067
 BoxCollider2D:
@@ -1482,6 +1554,5 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 8519658}
   - {fileID: 890091281}
-  - {fileID: 1917019066}
-  - {fileID: 660044040}
-  - {fileID: 1246226697}
+  - {fileID: 224425904}
+  - {fileID: 1154333577}

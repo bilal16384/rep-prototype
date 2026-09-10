@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-public class script_attaque : classe_attaque
+public class script_attaque_1 : classe_attaque
 {
     //attribus du coup de l'attaque spéciale
     protected bool enAttaqueSpécialeCoup = false;
@@ -16,8 +16,7 @@ public class script_attaque : classe_attaque
     [SerializeField] protected float vitesseProjectileY;
     [SerializeField] protected float variationVitesseProjectileY = 0.5f;
     protected float vitesseProjectileYActuelle = 0.5f;
-    protected bool 
-    regardeDroite = true; // Variable pour déterminer la direction du personnage et donc des projectiles
+    protected bool regardeDroite = true; // Variable pour déterminer la direction du personnage et donc des projectiles
     protected float tempsAttaqueProjectile = 0.1f; //temps entre chaque projectile
     protected Vector3 positionProjectile; //position de départ du projectile
     
@@ -49,6 +48,7 @@ public class script_attaque : classe_attaque
         {
             if (Time.time - tempsDernièreAttaqueSpéciale >= duréeAttaqueSpéciale)
             {
+                Debug.Log("Transition vers l'attaque spéciale par projectiles.");
                 transitionAttaqueProjectile();
             }
         }
@@ -62,18 +62,19 @@ public class script_attaque : classe_attaque
         }
     }
 
-    // 
+    
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("colizion détékté, enAttaqueSpécialeCoup : " + enAttaqueSpécialeCoup);
         //attaque spéciale coup
         if (enAttaqueSpécialeCoup)
         {
             Debug.Log("Collision détectée avec : " + collision.gameObject.name + "enAttaqueSpécialeCoup : " + enAttaqueSpécialeCoup);
-            if (collisionAvecEnnemi(collision))
+            if(collisionAvecEnnemi(collision))
             {
-                infligerDégâts(collision.gameObject, dégâtsAttaqueSpécialeCoup);
-                finAttaqueSpéciale();
+                if (infligerDégâts(collision.gameObject, dégâtsAttaqueSpécialeCoup))
+                {
+                    finAttaqueSpéciale();
+                }
             }
         }
     }
@@ -81,9 +82,7 @@ public class script_attaque : classe_attaque
     protected override void attaqueSpéciale()
     {
         base.attaqueSpéciale();
-        Debug.Log("attaque spéciale ++ activée");
         enAttaqueSpécialeCoup = true;
-        
     }
     protected override void finAttaqueSpéciale()
     {
@@ -123,23 +122,6 @@ public class script_attaque : classe_attaque
         {
             Debug.Log("Fin de l'attaque spéciale par projectiles.");
             vitesseProjectileYActuelle = vitesseProjectileY; //réinitialisation de la variation de vitesse verticale pour le prochain tir :)
-        }
-    }
-
-    protected void génererProjectile(GameObject projectile, Vector3 position, float vitesseX, float vitesseY, int dégâts, float duréeVie)
-    {
-        // Instancie le projectile à la position spécifiée sans rotation
-        GameObject nouveauProjectile = Instantiate(projectile, position, Quaternion.identity); 
-        script_projectile_attaque_spéciale scriptProjectile = nouveauProjectile.GetComponent<script_projectile_attaque_spéciale>();
-        if (scriptProjectile != null)
-        {
-            scriptProjectile.initialiserProjectile(position, vitesseX, vitesseY, dégâts, duréeVie, layerPersonnageEnnemi);
-
-        }
-        else
-        {
-            Debug.LogError("Le GameObject n'a pas de script_projectile_attaque_spéciale attaché.");
-            
         }
     }
 }

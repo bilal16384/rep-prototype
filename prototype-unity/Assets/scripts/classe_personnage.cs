@@ -28,6 +28,7 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
     [SerializeField] protected Key toucheDroite;
     [SerializeField] protected Key toucheGauche;   
     [SerializeField] protected Key toucheSaut;
+    [SerializeField] protected Key toucheDashBas;
 
 
     //animation
@@ -47,6 +48,11 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
     protected bool estEnSaut = false;
     protected int sautRestant = 1; // Nombre de sauts restants (1 pour un double saut) :)
     protected bool peutBouger = true; // Variable pour contrôler si le personnage peut bouger ou non
+    //affaiblissement
+    protected float duréeAffaiblissement = 0; // Variable pour stocker la durée de l'affaiblissement en secondes
+    protected float tempsAffaibli = 0; // Variable pour stocker le temps écoulé depuis le début de l'affaiblissement
+    protected float estAffaibli = 0f; // Variable pour contrôler à quel point le personnage est affaibli (0 = pas affaibli, 1 = complètement affaibli)
+    protected float tempsDernierAffaiblissement = 0; // Variable pour stocker le temps écoulé depuis le dernier affaiblissement
     
     
     //hitbox
@@ -54,6 +60,10 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
     protected BoxCollider2D boxCollider;
     //hitbox ennemis
     [SerializeField] protected BoxCollider2D boxColliderEnnemi;
+
+
+    //paramètres match
+    protected int nombreVies = 3;
 
     protected virtual void Awake() // Awake est appelé avant Start, même si le script est désactivé
     {
@@ -146,7 +156,18 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
                     sautRestant--; // Décrémente le nombre de sauts restants
                 }
             }
+            //dash vers le bas
+            if(clavier[toucheDashBas].wasPressedThisFrame)
+            {
+                if(detectersol() == false) //vérifie que le personnage soit en l'air avant d'effectuer le dash vers le bas
+                {
+                    peutBouger = true; // Permet au personnage de bouger à nouveau après le dash vers le bas
+                    rb.linearVelocity = new UnityEngine.Vector2(rb.linearVelocity.x, -forceSaut);
+                }
 
+
+
+            }
 
 
             
@@ -167,7 +188,27 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
                 estEnSaut = false;
                 longueurSaut = valeur_longueurSaut;
             }
-        
+            
+            
+            //tue le personnage si sa position est trop basse (au cas où il tombe du terrain)
+            if(transform.position.y <= -20)
+            {
+                mourir();
+                Debug.Log("Le personnage a été tué car sa position était trop basse");
+            }
+
+            //gestion de l'affaiblissement
+            if (estAffaibli > 0)
+            {
+                if (Time.time - tempsDernierAffaiblissement >= duréeAffaiblissement)
+                {
+                    estAffaibli = 0; // Réinitialise l'affaiblissement lorsque la durée est écoulée
+                    Debug.Log("L'affaiblissement du personnage " + nom + " est terminé.");
+                }
+               
+               
+            }
+
 
 
         }    
@@ -178,8 +219,30 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
     protected virtual void mourir()
     {
         estMort = true;
+        nombreVies --; //réduit le nombre de vies du personnage de 1 chaque fois qu'il meurt
+        Debug.Log(nombreVies);
+        if (nombreVies <= 0)
+        {
+            éliminerPersonnage();
+        }
+        else
+        {
+            apparaîtrePersonnage();
+            
+        }
     }
-    
+    protected virtual void éliminerPersonnage()
+    {
+        //à définir selon la logique de la partie
+        //script_Partie.Set.....
+    }
+    protected virtual void apparaîtrePersonnage()
+    {
+        transform.position = positionDépart;   // Position de départ à défiir selon les règles...
+        pointsVieActuels = pointsVieMax;
+        estMort = false;
+        longueurSaut = valeur_longueurSaut;
+    }
     
     public virtual void prendreDégâts(int dégâts)
     {
@@ -194,7 +257,25 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
             Debug.Log("Points de vie actuels : " + pointsVieActuels);
         }
     }
-
+    public virtual void soigner(int pointsDeSoin)
+    {
+        pointsVieActuels += pointsDeSoin;
+        if (pointsVieActuels > pointsVieMax)
+        {
+            pointsVieActuels = pointsVieMax;
+        }
+        Debug.Log("Points de vie actuels : " + pointsVieActuels);
+    }
+    public virtual void affaiblir(int durée, float pourcentageRéduction)
+    {
+        estAffaibli = pourcentageRéduction;
+        duréeAffaiblissement = durée;
+        tempsDernierAffaiblissement = Time.time; // Enregistre le temps actuel comme le temps du dernier affaiblissement
+    }
+    public virtual float obtenirEstAffaibli()
+    {
+        return estAffaibli;
+    }
 
 
     protected virtual bool detectersol()
