@@ -1,13 +1,8 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
-public class script_attaque_2 : classe_attaque
+
+public class script_attaque_base_1 : classe_attaque_base
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-
     protected override void Start()
     {
         base.Start();
@@ -17,20 +12,5 @@ public class script_attaque_2 : classe_attaque
     protected override void Update()
     {
         base.Update();
-
-        
     }
-
-    
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-
-    }
-
-    
-
-
-
 }
-
-

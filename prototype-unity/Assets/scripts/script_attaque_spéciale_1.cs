@@ -1,20 +1,22 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-public class script_attaque_1 : classe_attaque
+public class script_attaque_spéciale_1 : classe_attaque_spéciale
 {
     //attribus du coup de l'attaque spéciale
     protected bool enAttaqueSpécialeCoup = false;
     [SerializeField] protected int dégâtsAttaqueSpécialeCoup;
 
-    //attribus des projectiles de l'attaque spéciale]
+    //attribus des projectiles de l'attaque spéciale
     [SerializeField] protected GameObject prefabChaussure;
     protected bool enAttaqueSpécialeProjectile = false;
     [SerializeField] protected int quantitéProjetiles = 3;
     [SerializeField] protected int dégâtsAttaqueSpécialeProjectile;
     [SerializeField] protected float vitesseProjectileX;
-    [SerializeField] protected float duréeVieProjectile;
     [SerializeField] protected float vitesseProjectileY;
     [SerializeField] protected float variationVitesseProjectileY = 0.5f;
+    [SerializeField] protected float gravitéProjectile = 2.5f;
+    [SerializeField] protected float pourcentageRalentiProjectile = 0.5f;
+    [SerializeField] protected float duréeRalentiProjectile = 1f;
     protected float vitesseProjectileYActuelle = 0.5f;
     protected bool regardeDroite = true; // Variable pour déterminer la direction du personnage et donc des projectiles
     protected float tempsAttaqueProjectile = 0.1f; //temps entre chaque projectile
@@ -63,7 +65,7 @@ public class script_attaque_1 : classe_attaque
     }
 
     
-    void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnTriggerStay2D(Collider2D collision)
     {
         //attaque spéciale coup
         if (enAttaqueSpécialeCoup)
@@ -74,6 +76,7 @@ public class script_attaque_1 : classe_attaque
                 if (infligerDégâts(collision.gameObject, dégâtsAttaqueSpécialeCoup))
                 {
                     finAttaqueSpéciale();
+                    Debug.Log("fin de l'attaque spéciale après avoir infligé des dégâts avec le coup.");
                 }
             }
         }
@@ -113,7 +116,19 @@ public class script_attaque_1 : classe_attaque
             {
                 vitesseProjectileX = Mathf.Abs(vitesseProjectileX);
             }
-            génererProjectile(prefabChaussure, positionProjectile, vitesseProjectileX, vitesseProjectileYActuelle, dégâtsAttaqueSpécialeProjectile, duréeVieProjectile);
+            génererProjectile
+            (
+                prefabChaussure, 
+                positionProjectile, 
+                vitesseProjectileX, 
+                vitesseProjectileYActuelle, 
+                dégâtsAttaqueSpécialeProjectile, 
+                gravitéProjectile,
+                0,
+                0,
+                pourcentageRalentiProjectile,
+                duréeRalentiProjectile
+            ); // instancie le projectile avec la vitesse actuelle
             vitesseProjectileYActuelle += variationVitesseProjectileY; //modification de la vitesse verticale du projectile pour créer un effet de dispersion
             quantitéProjetilesRestante-=1;
             Invoke("tirerProjectiles", tempsAttaqueProjectile); // rappel de la fonction après un certain temps pour tirer le prochain projectile

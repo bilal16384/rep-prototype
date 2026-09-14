@@ -3,5 +3,7 @@ using UnityEngine;
 public interface In_prendre_dégâts
 {
     void prendreDégâts(int dégâts);
-    void appliquerAffaiblissement(float pourcentageRéduction, float durée);
+    void affaiblir(float duréeAffaiblissement, float pourcentageAffaiblissement);
+    void ralentir(float duréeRalenti, float pourcentageRalenti);
+    void soigner(int pointsDeSoin);
 }

@@ -1,40 +1,44 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
-public class classe_projectile : MonoBehaviour
+public class classe_projectile : classe_attaque
 {
     //attribus du projectile
     protected Vector3 positionDépart;
     protected float vitesseProjectileX;
     protected int dégâtsProjectile;
     protected float vitesseProjectileY;
-    protected float duréeVieProjectile;
-    protected int layerPersonnageEnnemi;
-
-    //références aux composants du projectile
-    private BoxCollider2D boxCollider;
-    private Rigidbody2D rb;
+    protected float duréeVieProjectile = 5f; // Durée de vie par défaut du projectile en secondes
+    protected float gravitéProjectile = 0f; // Gravité par défaut du projectile A !!!! DÉFINIR !!!!
+    protected float pourcentageAffaiblissementProjectile = 0f; // Pourcentage d'affaiblissement par défaut du projectile
+    protected float duréeAffaiblissementProjectile = 0f; // Durée d'affa
+    protected float pourcentageRalentiProjectile = 0f; // Pourcentage de ralentissement par défaut du projectile
+    protected float duréeRalentiProjectile = 0f; // Durée de ralentissement par défaut du projectile
+    //touches
+    protected Key toucheActivationProjectile;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    protected virtual void Start()
+    protected override void Start()
     {
+        rb.gravityScale = gravitéProjectile; // définit la gravité du projectile
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
-        Destroy(gameObject, duréeVieProjectile+3);
+        Destroy(gameObject, duréeVieProjectile); // détruit le projectile après la durée de vie spécifiée
 
         rb.linearVelocity = new Vector2(vitesseProjectileX, vitesseProjectileY);
         transform.position = positionDépart;
     }
 
     // Update is called once per frame
-    protected virtual void Update()
+    protected override void Update()
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
     }
 
     //Détecte les collisions avec d'autres objets
-    void OnTriggerEnter2D(Collider2D collision) 
+    protected virtual void OnTriggerEnter2D(Collider2D collision) 
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Terrain")) // vérifie si le projectile touche le terrain
         {
@@ -43,42 +47,42 @@ public class classe_projectile : MonoBehaviour
         }
         if (collisionAvecEnnemi(collision)) // vérifie si le projectile touche un ennemi
         {
-            if (infligerDégâts(collision.gameObject, dégâtsProjectile))
+            if (infligerEffet(collision.gameObject, dégâtsProjectile, pourcentageAffaiblissementProjectile, duréeAffaiblissementProjectile, pourcentageRalentiProjectile, duréeRalentiProjectile))
             {
                 Destroy(gameObject);
             }
         }
     }
 
-    protected virtual bool infligerDégâts(GameObject cible, int dégâts)
-    {
-        if (cible.TryGetComponent<In_prendre_dégâts>(out In_prendre_dégâts personnageCible)) // Vérifie si le GameObject cible a un composant qui implémente l'interface In_prendre_dégâts et l'assigne à la variable personnageCible
-        {
-            personnageCible.prendreDégâts(dégâts);
-            Debug.Log("Dégâts infligés à " + cible.name + " : " + dégâts);
-            return true; // Retourne true si les dégâts ont été infligés avec succès
-        }
-        else
-        {
-            Debug.Log("Aucune interface In_prendre_dégâts trouvé sur " + cible.name);
-            return false; // Retourne false si le GameObject cible n'a pas de composant qui implémente l'interface In_prendre_dégâts
-        }
-    }
 
-    protected virtual bool collisionAvecEnnemi(Collider2D collision) // Vérifie si le GameObject avec lequel il y a collision est un ennemi
-    {
-        return collision.gameObject.layer == layerPersonnageEnnemi;
-    }
-
-    public void initialiserProjectile(Vector3 position, float vitesseX, float vitesseY, int dégâts, float duréeVie, int layerEnnemi)
+    public virtual void initialiserProjectile // Méthode pour initialiser les paramètres du projectile
+    (
+        Vector3 position, 
+        float vitesseX, 
+        float vitesseY, 
+        int dégâts, 
+        int layerEnnemi, 
+        float gravité = 0f,
+        float pourcentageAffaiblissement = 0f,
+        float duréeAffaiblissement = 0f,
+        float pourcentageRalenti = 0f,
+        float duréeRalenti = 0f,
+        Key toucheActivation = Key.None // touche pour activer l'effet de la bombe magique
+    )
     {
         positionDépart = position;
         vitesseProjectileX = vitesseX;
         vitesseProjectileY = vitesseY;
+        gravitéProjectile = gravité;
         dégâtsProjectile = dégâts;
         layerPersonnageEnnemi = layerEnnemi;
-        duréeVieProjectile = duréeVie;
+        pourcentageAffaiblissementProjectile = pourcentageAffaiblissement;
+        duréeAffaiblissementProjectile = duréeAffaiblissement;
+        pourcentageRalentiProjectile = pourcentageRalenti;
+        duréeRalentiProjectile = duréeRalenti;
+        toucheActivationProjectile = toucheActivation;
+        
     }
 
-
+    
 }

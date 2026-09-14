@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 public class classe_personnage : MonoBehaviour, In_prendre_dégâts
 {
 
@@ -33,8 +34,15 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
 
     //animation
     [SerializeField] protected Animator animator;
-
-
+    //couleur du personnage
+    protected SpriteRenderer spriteRenderer;
+    protected Color couleurInitiale;
+    protected Color couleurRalenti = Color.blue;
+    protected Color couleurAffaibli = Color.green;
+    protected Color couleurRalentiAffaibli = Color.cyan;
+    protected Color couleurDégâts = Color.red;
+    protected float duréeFlash = 0.1f; // Durée du flash de couleur lorsqu'on prend des dégâts
+    protected bool estEnFlash = false; // Indique si le personnage est actuellement en train de flasher ou non
 
     //variables de jeu
 
@@ -48,6 +56,10 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
     protected bool estEnSaut = false;
     protected int sautRestant = 1; // Nombre de sauts restants (1 pour un double saut) :)
     protected bool peutBouger = true; // Variable pour contrôler si le personnage peut bouger ou non
+    //ralentissement
+    protected float estRalenti = 0f; // Variable pour contrôler à quel point le personnage est ralenti (0 = pas ralenti, 1 = complètement ralenti)
+    protected float duréeRalenti = 0; // Variable pour stocker la durée du ralentissement en secondes
+    protected float tempsDernierRalenti = 0; // Variable pour stocker le temps écoulé depuis le dernier ralentissement
     //affaiblissement
     protected float duréeAffaiblissement = 0; // Variable pour stocker la durée de l'affaiblissement en secondes
     protected float tempsAffaibli = 0; // Variable pour stocker le temps écoulé depuis le début de l'affaiblissement
@@ -67,6 +79,8 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
 
     protected virtual void Awake() // Awake est appelé avant Start, même si le script est désactivé
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        couleurInitiale = spriteRenderer.color;
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
         Physics2D.IgnoreCollision(boxCollider, boxColliderEnnemi, true); // Ignore la collision entre le personnage et l'ennemi
@@ -100,7 +114,11 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
             //applique la vitesse horizontale au personnage
             if (peutBouger)
             {
-                rb.linearVelocity = new UnityEngine.Vector2(moveX * vitesse, rb.linearVelocity.y); // Applique la vitesse horizontale au personnage
+                rb.linearVelocity = new UnityEngine.Vector2
+                (
+                    moveX * vitesse * (1 - estRalenti), 
+                    rb.linearVelocity.y
+                ); // Applique la vitesse horizontale au personnage
             }
             else
             {
@@ -114,6 +132,29 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
             //calcul de la vitesse actuelle pour l'animation (valeur absolue de la vitesse horizontale)
             float vitesseActuelle = Mathf.Abs(rb.linearVelocity.x);
             animator.SetFloat("Vitesse", vitesseActuelle);
+
+            
+            //couleur du personnage en fonction de l'état (ralenti, affaibli, ralenti et affaibli)
+            if (!estEnFlash) // Vérifie si le personnage n'est pas en train de flasher
+            {
+                if (estRalenti > 0 && estAffaibli > 0)
+                {
+                    changerCouleur(couleurRalentiAffaibli);
+                }
+                else if (estRalenti > 0)
+                {
+                    changerCouleur(couleurRalenti);
+                }
+                else if (estAffaibli > 0)
+                {
+                    changerCouleur(couleurAffaibli);
+                }
+                else
+                {
+                    réinitialiserCouleur();
+                }
+            }
+
 
             
 
@@ -151,7 +192,7 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
                 }
                 else if (sautRestant > 0)
                 {
-                    rb.linearVelocity = new UnityEngine.Vector2((System.Convert.ToInt32(regardeDroite) * 2 - 1) * vitesse, forceSaut * 0.5f); // Applique la vitesse horizontale en fonction de la direction du personnage
+                    rb.linearVelocity = new UnityEngine.Vector2((System.Convert.ToInt32(regardeDroite) * 2 - 1) * vitesse * (1- estRalenti), forceSaut * 0.5f); // Applique la vitesse horizontale en fonction de la direction du personnage
                     peutBouger = false; // Empêche le personnage de bouger pendant le double saut
                     sautRestant--; // Décrémente le nombre de sauts restants
                 }
@@ -205,10 +246,16 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
                     estAffaibli = 0; // Réinitialise l'affaiblissement lorsque la durée est écoulée
                     Debug.Log("L'affaiblissement du personnage " + nom + " est terminé.");
                 }
-               
-               
             }
-
+            //gestion du ralentissement
+            if (estRalenti > 0)
+            {
+                if (Time.time - tempsDernierRalenti >= duréeRalenti)
+                {
+                    estRalenti = 0; // Réinitialise le ralentissement lorsque la durée est écoulée
+                    Debug.Log("Le ralentissement du personnage " + nom + " est terminé.");
+                }
+            }
 
 
         }    
@@ -216,6 +263,8 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
 
 
     //méthodes
+
+    //apparition et disparition du personnage
     protected virtual void mourir()
     {
         estMort = true;
@@ -234,7 +283,9 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
     protected virtual void éliminerPersonnage()
     {
         //à définir selon la logique de la partie
-        //script_Partie.Set.....
+        spriteRenderer.enabled = false;
+
+        
     }
     protected virtual void apparaîtrePersonnage()
     {
@@ -244,9 +295,12 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
         longueurSaut = valeur_longueurSaut;
     }
     
+
+    //effets sur le personnage
     public virtual void prendreDégâts(int dégâts)
     {
         pointsVieActuels -= dégâts;
+        déclencherCouleurDégâts();
         if (pointsVieActuels <= 0 && !estMort)
         {
             mourir();
@@ -257,6 +311,7 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
             Debug.Log("Points de vie actuels : " + pointsVieActuels);
         }
     }
+    //méthode pour soigner le personnage
     public virtual void soigner(int pointsDeSoin)
     {
         pointsVieActuels += pointsDeSoin;
@@ -266,9 +321,10 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
         }
         Debug.Log("Points de vie actuels : " + pointsVieActuels);
     }
-    public virtual void affaiblir(int durée, float pourcentageRéduction)
+    //affaiblissement du personnage
+    public virtual void affaiblir(float durée, float pourcentageAffaiblissement)
     {
-        estAffaibli = pourcentageRéduction;
+        estAffaibli = pourcentageAffaiblissement;
         duréeAffaiblissement = durée;
         tempsDernierAffaiblissement = Time.time; // Enregistre le temps actuel comme le temps du dernier affaiblissement
     }
@@ -277,7 +333,15 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
         return estAffaibli;
     }
 
+    //ralentissement du personnage
+    public virtual void ralentir(float durée, float pourcentageRalenti)
+    {
+        estRalenti = pourcentageRalenti;
+        duréeRalenti = durée;
+        tempsDernierRalenti = Time.time; // Enregistre le temps actuel comme le temps du dernier ralentissement
+    }
 
+    //méthode pour détecter si le personnage touche le sol
     protected virtual bool detectersol()
     {
         UnityEngine.Vector2 tailleReduite = new UnityEngine.Vector2
@@ -300,5 +364,38 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
         }
         return false;
     }
+
+    //couleur du personnage
+    protected virtual void changerCouleur(Color couleur)
+    {
+        spriteRenderer.color = couleur;
+    }
+
+    protected virtual void réinitialiserCouleur()
+    {
+        estEnFlash = false;
+        spriteRenderer.color = couleurInitiale;
+    }
+
+    protected virtual void déclencherCouleurDégâts()
+    {
+        changerCouleur(couleurDégâts);
+        estEnFlash = true;
+        Invoke("réinitialiserCouleur", duréeFlash); // Réinitialise la couleur après la durée du flash
+    }
+
+
+
+    //initialisation du personnage
+    public virtual void initialiserPersonnage
+    (Vector3 positionInitiale
+    )
+    {
+        positionDépart = positionInitiale;   // Position de départ à défiir selon les règles...
+    }
+
+
+
+
 
 }
