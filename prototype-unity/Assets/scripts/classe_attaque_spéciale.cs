@@ -20,18 +20,17 @@ public class classe_attaque_spéciale : classe_attaque
     {
         base.Awake();
         scriptPersonnage = transform.parent.GetComponent<classe_personnage>();
-        Debug.Log("script_personnage trouvé sur le parent de" + transform.name + " : " + scriptPersonnage.name);
+        
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Start()
     {
-        base.Start();
+        this.gameObject.layer = transform.parent.gameObject.layer; // Assigne le layer du GameObject de l'attaque au même layer que le parent (personnage)
         enAttaqueSpéciale = false;
         tempsDernièreAttaqueSpéciale = -(rechargeAttaqueSpéciale); // permet d'attaquer dès le début du jeu
         if(layerPersonnageEnnemi == 0)
         {
             définirLayerPersonnageEnnemi(gameObject.layer); // Définit le layer du personnage ennemi en fonction du layer du personnage actuel
-            Debug.Log("Layer du personnage ennemi de "+ gameObject.name +" défini sur : " + LayerMask.LayerToName(layerPersonnageEnnemi));
         }
     }
 
@@ -72,6 +71,9 @@ public class classe_attaque_spéciale : classe_attaque
         Debug.Log("Fin de l'attaque spéciale.");
     }
 
-
+    public virtual void assignerTouches(Key toucheAttaqueSpéciale)
+    {
+        this.toucheAttaqueSpeciale = toucheAttaqueSpéciale;
+    }
 
 }

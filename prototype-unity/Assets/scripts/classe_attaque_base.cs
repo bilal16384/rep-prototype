@@ -36,7 +36,6 @@ public class classe_attaque_base : classe_attaque
     {
         base.Awake();
         scriptPersonnage = transform.parent.GetComponent<classe_personnage>();
-        Debug.Log("script_personnage trouvé sur le parent de" + transform.name + " : " + scriptPersonnage.name);
     }
 
 
@@ -44,6 +43,7 @@ public class classe_attaque_base : classe_attaque
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Start()
     {
+        this.gameObject.layer = transform.parent.gameObject.layer; // Assigne le layer du GameObject de l'attaque au même layer que le parent (personnage)
         enAttaque = false;
         tempsDernièreAttaque = -(rechargeAttaqueBase); // permet d'attaquer dès le début du jeu
         if(layerPersonnageEnnemi == 0)
@@ -126,5 +126,13 @@ public class classe_attaque_base : classe_attaque
         {
             return dégâts;
         }
+    }
+
+
+
+
+    public virtual void assignerTouches(Key toucheAttaqueBase)
+    {
+        this.toucheAttaqueBase = toucheAttaqueBase;
     }
 }

@@ -214,7 +214,6 @@ MonoBehaviour:
   toucheSaut: 23
   toucheDashBas: 25
   animator: {fileID: 7052112482404743060}
-  boxColliderEnnemi: {fileID: 0}
 --- !u!1 &4521344144934363999
 GameObject:
   m_ObjectHideFlags: 0
@@ -307,7 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc874e1f7fd6cea408cd9a4f644431fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::script_attaque_base_2
-  "d\xE9g\xE2tsAttaqueBase": 15
+  "d\xE9g\xE2tsAttaqueBase": 10
   rechargeAttaqueBase: 0.2
   toucheAttaqueBase: 28
 --- !u!114 &7947213756443225949
@@ -322,12 +321,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aaae796da04a6e46bd4d3966691aca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::script_attaque_2
-  "rechargeAttaqueSp\xE9ciale": 8
+  "rechargeAttaqueSp\xE9ciale": 4
   toucheAttaqueSpeciale: 27
   prefabBombeMagique: {fileID: 4867358460058477047, guid: d9f31fefa4e2ca04bbb015fd25a92f6d, type: 3}
   vitesseProjectileX: 7.5
   vitesseProjectileY: 15
-  "d\xE9g\xE2tsAttaqueSp\xE9cialeProjectile": 15
+  "d\xE9g\xE2tsAttaqueSp\xE9cialeProjectile": 20
   pourcentageAffaiblissementProjectile: 50
   "dur\xE9eAffaiblissementProjectile": 2
   rayonExplosionBombeMagique: 3

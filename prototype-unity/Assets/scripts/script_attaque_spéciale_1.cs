@@ -48,7 +48,7 @@ public class script_attaque_spéciale_1 : classe_attaque_spéciale
 
         if (enAttaqueSpécialeCoup)
         {
-            if (Time.time - tempsDernièreAttaqueSpéciale >= duréeAttaqueSpéciale)
+            if (Time.time - tempsDernièreAttaqueSpéciale >= duréeAttaqueSpéciale) // vérifie si la durée de l'attaque spéciale coup est écoulée
             {
                 Debug.Log("Transition vers l'attaque spéciale par projectiles.");
                 transitionAttaqueProjectile();

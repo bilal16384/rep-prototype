@@ -37,6 +37,7 @@ public class classe_attaque : MonoBehaviour
             layerPersonnageEnnemi = LayerMask.NameToLayer("Personnage_1"); // Layer "Personnage_1"
         else
             Debug.LogWarning("Le personnage " + gameObject.name + " n'est pas sur un layer valide pour définir le layer ennemi.");
+        Debug.Log("Layer ennemi de " + gameObject.name + " défini sur : " + LayerMask.LayerToName(layerPersonnageEnnemi));
     }
     protected virtual int obtenirLayerEnnemi(int layer) // Retourne le layer du personnage ennemi
     {
@@ -53,11 +54,15 @@ public class classe_attaque : MonoBehaviour
 
     protected virtual bool collisionAvecEnnemi(Collider2D collision) // Vérifie si le GameObject avec lequel il y a collision est un ennemi
     {
-        return collision.gameObject.layer == layerPersonnageEnnemi;
+        bool collisionEnnemi = collision.gameObject.layer == layerPersonnageEnnemi;
+        Debug.Log("Collision avec ennemi : " + collisionEnnemi);
+        return collisionEnnemi;
     }
     protected virtual bool collisionAvecAllié(Collider2D collision) // Vérifie si le GameObject avec lequel il y a collision est un allié
     {
-        return collision.gameObject.layer == obtenirLayerEnnemi(layerPersonnageEnnemi);
+        bool collisionAllié = collision.gameObject.layer == obtenirLayerEnnemi(layerPersonnageEnnemi);
+        Debug.Log("Collision avec allié : " + collisionAllié);
+        return collisionAllié;
     }
 
 

@@ -31,6 +31,7 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
     [SerializeField] protected Key toucheSaut;
     [SerializeField] protected Key toucheDashBas;
 
+    
 
     //animation
     [SerializeField] protected Animator animator;
@@ -71,7 +72,10 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
     protected Rigidbody2D rb;
     protected BoxCollider2D boxCollider;
     //hitbox ennemis
-    [SerializeField] protected BoxCollider2D boxColliderEnnemi;
+    protected BoxCollider2D boxColliderEnnemi;
+
+    //layer du personnage
+    protected int layerpersonnage;
 
 
     //paramètres match
@@ -83,7 +87,7 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
         couleurInitiale = spriteRenderer.color;
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
-        Physics2D.IgnoreCollision(boxCollider, boxColliderEnnemi, true); // Ignore la collision entre le personnage et l'ennemi
+        
     }
     protected virtual void Start() // Start est appelé avant la première image, seulement si le script est activé
     {
@@ -91,6 +95,7 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
         pointsVieActuels = pointsVieMax;
         estMort = false;
         longueurSaut = valeur_longueurSaut;
+        Physics2D.IgnoreCollision(boxCollider, boxColliderEnnemi, true); // Ignore la collision entre le personnage et l'ennemi
     }
 
 
@@ -388,14 +393,30 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
 
     //initialisation du personnage
     public virtual void initialiserPersonnage
-    (Vector3 positionInitiale
+    (
+        Vector3 positionInitiale,
+        BoxCollider2D boxColliderPersonnageEnnemi,
+        int layerpersonnage
     )
     {
         positionDépart = positionInitiale;   // Position de départ à défiir selon les règles...
+        boxColliderEnnemi = boxColliderPersonnageEnnemi;
+        this.layerpersonnage = layerpersonnage;
+        Debug.Log("Personnage initialisé avec la position : " + positionInitiale + " et le layer : " + layerpersonnage);
+        Debug.Log("BoxCollider ennemi assigné : " + boxColliderEnnemi);
+
+
+
     }
 
 
-
+    public virtual void assignerTouches(Key toucheDroite, Key toucheGauche, Key toucheSaut, Key toucheDashBas) // Méthode pour assigner les touches du personnage
+    {
+        this.toucheSaut = toucheSaut;
+        this.toucheDashBas = toucheDashBas;
+        this.toucheGauche = toucheGauche;
+        this.toucheDroite = toucheDroite;
+    }
 
 
 }
