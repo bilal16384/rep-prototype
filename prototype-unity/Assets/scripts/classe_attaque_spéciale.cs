@@ -8,7 +8,6 @@ public class classe_attaque_spéciale : classe_attaque
     //touches
     [SerializeField] protected Key toucheAttaqueSpeciale;
 
-
     protected float duréeAttaqueSpéciale = 0.05f;
     protected float tempsDernièreAttaqueSpéciale = 0f;
     protected bool enAttaqueSpéciale = false;
@@ -25,6 +24,7 @@ public class classe_attaque_spéciale : classe_attaque
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Start()
     {
+        scriptVisuelJoueur = scriptPersonnage.récupérerScriptVisuelJoueur();
         this.gameObject.layer = transform.parent.gameObject.layer; // Assigne le layer du GameObject de l'attaque au même layer que le parent (personnage)
         enAttaqueSpéciale = false;
         tempsDernièreAttaqueSpéciale = -(rechargeAttaqueSpéciale); // permet d'attaquer dès le début du jeu
@@ -40,14 +40,18 @@ public class classe_attaque_spéciale : classe_attaque
         Keyboard clavier = Keyboard.current;
         if (clavier != null)
         {
-            if (clavier[toucheAttaqueSpeciale].wasPressedThisFrame && Time.time - tempsDernièreAttaqueSpéciale >= rechargeAttaqueSpéciale)
+            if (clavier[toucheAttaqueSpeciale].wasPressedThisFrame && Time.time - tempsDernièreAttaqueSpéciale >= rechargeAttaqueSpéciale && !enElimination)
             {
                 attaqueSpéciale();
+                if (scriptVisuelJoueur != null)
+                {
+                    scriptVisuelJoueur.ViderRechargeAttaqueSpeciale(rechargeAttaqueSpéciale);
+                }
+                else
+                {
+                    Debug.Log("Attaque spéciale en recharge, mais le script visuel du joueur est manquant.");
+                }
                 tempsDernièreAttaqueSpéciale = Time.time;
-            }
-            else if (clavier[toucheAttaqueSpeciale].wasPressedThisFrame)
-            {
-                Debug.Log("Attaque spéciale en recharge. Temps restant : " + (rechargeAttaqueSpéciale - (Time.time - tempsDernièreAttaqueSpéciale)) + " secondes.");
             }
         }
     
@@ -63,6 +67,7 @@ public class classe_attaque_spéciale : classe_attaque
     protected virtual void attaqueSpéciale()
     {
         enAttaqueSpéciale = true;
+
         Debug.Log("Attaque spéciale effectuée !");
     }
     protected virtual void finAttaqueSpéciale()

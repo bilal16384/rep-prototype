@@ -7,6 +7,7 @@ public class donnéesDePartie : MonoBehaviour
     protected int personnageChoisi2; // Indique le personnage choisi par le joueur 2
 
     protected int joueurGagnant; // Indique le joueur gagnant de la partie
+    protected int personnageGagnant; // Indique le personnage gagnant de la partie
 
 
     private void Awake()
@@ -27,9 +28,17 @@ public class donnéesDePartie : MonoBehaviour
         personnageChoisi2 = choix2;
     }
 
-    public void définirJoueurGagnant(int gagnant)
+    public void définirGagnant(int joueur)
     {
-        joueurGagnant = gagnant;
+        joueurGagnant = joueur;
+        if (joueur == 1)
+        {
+            personnageGagnant = personnageChoisi1;
+        }
+        else if (joueur == 2)
+        {
+            personnageGagnant = personnageChoisi2;
+        }
     }
 
 
@@ -48,12 +57,18 @@ public class donnéesDePartie : MonoBehaviour
         return joueurGagnant;
     }
 
+    public int obtenirPersonnageGagnant()
+    {
+        return personnageGagnant;
+    }
+
 
     public void réinitialiserDonnées()
     {
         personnageChoisi1 = -1;
         personnageChoisi2 = -1;
         joueurGagnant = -1;
+        personnageGagnant = -1;
     }
 
 }

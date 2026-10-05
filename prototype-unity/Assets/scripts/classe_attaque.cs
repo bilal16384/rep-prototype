@@ -7,11 +7,15 @@ public class classe_attaque : MonoBehaviour
     protected float pourcentageRéduction = 0f; // Variable pour stocker le pourcentage de réduction des dégâts
     protected float duréeAffaiblissement = 0f; // Variable pour stocker la durée de l'affaiblissement
     protected int dégâts;
+    protected bool enElimination = false; // Indique si l'attaque est en phase d'élimination après le temps imparti
 
     //références aux composants de l'attaque
     protected BoxCollider2D boxCollider;
 
     protected Rigidbody2D rb;
+
+    // références au script du visuel du joueur
+    protected classe_visuel_joueur scriptVisuelJoueur;
 
     protected virtual void Awake()
     {
@@ -55,13 +59,11 @@ public class classe_attaque : MonoBehaviour
     protected virtual bool collisionAvecEnnemi(Collider2D collision) // Vérifie si le GameObject avec lequel il y a collision est un ennemi
     {
         bool collisionEnnemi = collision.gameObject.layer == layerPersonnageEnnemi;
-        Debug.Log("Collision avec ennemi : " + collisionEnnemi);
         return collisionEnnemi;
     }
     protected virtual bool collisionAvecAllié(Collider2D collision) // Vérifie si le GameObject avec lequel il y a collision est un allié
     {
         bool collisionAllié = collision.gameObject.layer == obtenirLayerEnnemi(layerPersonnageEnnemi);
-        Debug.Log("Collision avec allié : " + collisionAllié);
         return collisionAllié;
     }
 
@@ -72,8 +74,8 @@ public class classe_attaque : MonoBehaviour
     {
         if (cible.TryGetComponent<In_prendre_dégâts>(out In_prendre_dégâts personnageCible)) // Vérifie si le GameObject cible a un composant qui implémente l'interface In_prendre_dégâts et l'assigne à la variable personnageCible
         {
+            Debug.Log("Effet infligé à " + cible.name + "Dégâts : " + dégâts);
             personnageCible.prendreDégâts(dégâts);
-            Debug.Log("Dégâts infligés à " + cible.name + " : " + dégâts);
             personnageCible.affaiblir(pourcentageAffaiblissement, duréeAffaiblissement); // Applique l'affaiblissement au personnage cible avec la durée spécifiée
             personnageCible.ralentir(duréeRalenti, pourcentageRalenti); // Applique le ralentissement au personnage cible avec la durée et le pourcentage spécifiés
             return true; // Retourne true si les dégâts ont été infligés avec succès
@@ -142,5 +144,9 @@ public class classe_attaque : MonoBehaviour
         {
             Debug.LogError("Le GameObject n'a pas de script_projectile_attaque_spéciale attaché.");
         }
+    }
+    public virtual void mettreEnElimination()
+    {
+        enElimination = true;
     }
 }

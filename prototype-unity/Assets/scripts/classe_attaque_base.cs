@@ -10,7 +10,6 @@ public class classe_attaque_base : classe_attaque
     [SerializeField] protected float rechargeAttaqueBase;
 
 
-
     //touches
     [SerializeField] protected Key toucheAttaqueBase;
 
@@ -36,6 +35,7 @@ public class classe_attaque_base : classe_attaque
     {
         base.Awake();
         scriptPersonnage = transform.parent.GetComponent<classe_personnage>();
+
     }
 
 
@@ -43,6 +43,7 @@ public class classe_attaque_base : classe_attaque
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Start()
     {
+        scriptVisuelJoueur = scriptPersonnage.récupérerScriptVisuelJoueur();
         this.gameObject.layer = transform.parent.gameObject.layer; // Assigne le layer du GameObject de l'attaque au même layer que le parent (personnage)
         enAttaque = false;
         tempsDernièreAttaque = -(rechargeAttaqueBase); // permet d'attaquer dès le début du jeu
@@ -58,9 +59,13 @@ public class classe_attaque_base : classe_attaque
         Keyboard clavier = Keyboard.current;
         if (clavier != null)
         {
-            if (clavier[toucheAttaqueBase].wasPressedThisFrame && Time.time - tempsDernièreAttaque >= rechargeAttaqueBase)
+            if (clavier[toucheAttaqueBase].wasPressedThisFrame && Time.time - tempsDernièreAttaque >= rechargeAttaqueBase && !enElimination)
             {
                 attaqueBase();
+                if (scriptVisuelJoueur != null)
+                {
+                    scriptVisuelJoueur.ViderRechargeAttaqueBase(rechargeAttaqueBase);
+                }
                 tempsDernièreAttaque = Time.time;
             }
         }

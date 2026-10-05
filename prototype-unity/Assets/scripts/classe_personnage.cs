@@ -9,7 +9,8 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
     //attribus des personnages
     [SerializeField] protected string nom;
 
-
+    // visuel du personnage
+    protected classe_visuel_joueur scriptVisuelJoueur;
 
 
     //vie
@@ -50,6 +51,8 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
     //vie
     protected float pointsVieActuels;
     protected bool estMort = false;
+    protected bool estEliminé = false; // Indique si le personnage a été éliminé
+    protected int nombreVies = 3;
 
     //déplacement
     protected bool regardeDroite = true;
@@ -57,6 +60,7 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
     protected bool estEnSaut = false;
     protected int sautRestant = 1; // Nombre de sauts restants (1 pour un double saut) :)
     protected bool peutBouger = true; // Variable pour contrôler si le personnage peut bouger ou non
+
     //ralentissement
     protected float estRalenti = 0f; // Variable pour contrôler à quel point le personnage est ralenti (0 = pas ralenti, 1 = complètement ralenti)
     protected float duréeRalenti = 0; // Variable pour stocker la durée du ralentissement en secondes
@@ -67,7 +71,9 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
     protected float estAffaibli = 0f; // Variable pour contrôler à quel point le personnage est affaibli (0 = pas affaibli, 1 = complètement affaibli)
     protected float tempsDernierAffaiblissement = 0; // Variable pour stocker le temps écoulé depuis le dernier affaiblissement
     
-    
+
+    // en phase d'élimination après le temps imparti
+    protected bool enElimination = false; // Indique si le personnage est en phase d'élimination après le temps imparti    
     //hitbox
     protected Rigidbody2D rb;
     protected BoxCollider2D boxCollider;
@@ -79,7 +85,7 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
 
 
     //paramètres match
-    protected int nombreVies = 3;
+    
 
     protected virtual void Awake() // Awake est appelé avant Start, même si le script est désactivé
     {
@@ -117,7 +123,7 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
             if (clavier[toucheGauche].isPressed) moveX = -1;
             
             //applique la vitesse horizontale au personnage
-            if (peutBouger)
+            if (peutBouger && !enElimination)
             {
                 rb.linearVelocity = new UnityEngine.Vector2
                 (
@@ -189,7 +195,7 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
 
             if (clavier[toucheSaut].wasPressedThisFrame)
             {
-                if (detectersol())
+                if (detectersol() && !enElimination)
                 {
                     rb.linearVelocity = new UnityEngine.Vector2(rb.linearVelocity.x, forceSaut);
                     estEnSaut = true;
@@ -203,7 +209,7 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
                 }
             }
             //dash vers le bas
-            if(clavier[toucheDashBas].wasPressedThisFrame)
+            if(clavier[toucheDashBas].wasPressedThisFrame && !enElimination)
             {
                 if(detectersol() == false) //vérifie que le personnage soit en l'air avant d'effectuer le dash vers le bas
                 {
@@ -218,7 +224,7 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
 
             
             //Prolongation du premier saut si la touche de saut est maintenue enfoncée
-            if (estEnSaut == true && clavier [toucheSaut].isPressed && peutBouger == true)
+            if (estEnSaut == true && clavier [toucheSaut].isPressed && peutBouger == true && !enElimination)
             {
                 rb.linearVelocity = new UnityEngine.Vector2(rb.linearVelocity.x, forceSaut);
                 longueurSaut -= Time.deltaTime;
@@ -274,7 +280,8 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
     {
         estMort = true;
         nombreVies --; //réduit le nombre de vies du personnage de 1 chaque fois qu'il meurt
-        Debug.Log(nombreVies);
+        scriptVisuelJoueur.MettreAJourNombreVies(nombreVies); // Met à jour l'affichage du nombre de vies du joueur
+
         if (nombreVies <= 0)
         {
             éliminerPersonnage();
@@ -287,8 +294,8 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
     }
     protected virtual void éliminerPersonnage()
     {
-        //à définir selon la logique de la partie
-        spriteRenderer.enabled = false;
+        estEliminé = true;
+        gameObject.SetActive(false); // Désactive le GameObject du personnage
 
         
     }
@@ -315,6 +322,7 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
         {
             Debug.Log("Points de vie actuels : " + pointsVieActuels);
         }
+        scriptVisuelJoueur.MettreAJourBarreDeVie(pointsVieActuels, pointsVieMax);
     }
     //méthode pour soigner le personnage
     public virtual void soigner(int pointsDeSoin)
@@ -325,6 +333,7 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
             pointsVieActuels = pointsVieMax;
         }
         Debug.Log("Points de vie actuels : " + pointsVieActuels);
+        scriptVisuelJoueur.MettreAJourBarreDeVie(pointsVieActuels, pointsVieMax);
     }
     //affaiblissement du personnage
     public virtual void affaiblir(float durée, float pourcentageAffaiblissement)
@@ -396,7 +405,8 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
     (
         Vector3 positionInitiale,
         BoxCollider2D boxColliderPersonnageEnnemi,
-        int layerpersonnage
+        int layerpersonnage,
+        classe_visuel_joueur visuelJoueur
     )
     {
         positionDépart = positionInitiale;   // Position de départ à défiir selon les règles...
@@ -405,7 +415,8 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
         Debug.Log("Personnage initialisé avec la position : " + positionInitiale + " et le layer : " + layerpersonnage);
         Debug.Log("BoxCollider ennemi assigné : " + boxColliderEnnemi);
 
-
+        scriptVisuelJoueur = visuelJoueur;
+        Debug.Log("Script visuel joueur assigné : " + scriptVisuelJoueur);
 
     }
 
@@ -418,5 +429,21 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
         this.toucheDroite = toucheDroite;
     }
 
+    public virtual classe_visuel_joueur récupérerScriptVisuelJoueur() // Méthode pour récupérer le script visuel du joueur pour l'utiliser dans les scripts d'attaque
+    {
+        return scriptVisuelJoueur;
+    }
+    public virtual bool obtenirEstEliminé()
+    {
+        return estEliminé;
+    }
 
+    public virtual void mettreEnElimination()
+    {
+        enElimination = true;
+    }
+    public virtual bool obtenirEnElimination()
+    {
+        return enElimination;
+    }
 }

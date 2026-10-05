@@ -16,6 +16,11 @@ public class manager_menu : MonoBehaviour
 
     private int personnageJoueur1;
     private int personnageJoueur2;
+    void Start()
+    {
+        désactiverMenupersonnages();
+        donnéesDePartie.Instance.réinitialiserDonnées(); // Réinitialise les données de la partie au démarrage du menu
+    }
 
     void Update()
     {
@@ -77,9 +82,15 @@ public class manager_menu : MonoBehaviour
     public void démarrerPartie()
     {
         Debug.Log("Partie démarrée avec les personnages : Joueur 1 - " + personnageJoueur1 + ", Joueur 2 - " + personnageJoueur2);
-        
-        donnéesDePartie.Instance.définirPersonnagesChoisis(personnageJoueur1, personnageJoueur2);
-        SceneManager.LoadScene("Partie"); // Charge la scène de la partie avec les personnages choisis
+        if (personnageJoueur1 != -1 && personnageJoueur2 != -1) // vérifie si les deux personnages ont été sélectionnés
+        {
+            donnéesDePartie.Instance.définirPersonnagesChoisis(personnageJoueur1, personnageJoueur2);
+            SceneManager.LoadScene("Partie"); // Charge la scène de la partie avec les personnages choisis
+        }
+        else
+        {
+            Debug.Log("Veuillez sélectionner les personnages pour les deux joueurs avant de démarrer la partie.");
+        }
     }
 
 }

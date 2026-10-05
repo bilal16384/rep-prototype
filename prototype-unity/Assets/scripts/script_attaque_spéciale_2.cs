@@ -45,10 +45,8 @@ public class script_attaque_spéciale_2 : classe_attaque_spéciale
 
     protected void tirerProjectile()
     {
-        Debug.Log("Tir du projectile de l'attaque spéciale !" + "toucheAttaqueSpeciale: " + toucheAttaqueSpeciale);
         positionProjectile = boxCollider.bounds.center; // récupère la position de la zone d'attaque pour instancier le projectile
         regardeDroite = transform.parent.localScale.x > 0; // Met à jour la direction du personnage avant de tirer le projectile
-        Debug.Log("Direction du personnage : " + (regardeDroite ? "Droite" : "Gauche"));
         if (regardeDroite)
         {
             vitesseProjectileX = Mathf.Abs(vitesseProjectileX); // Assure que la vitesse du projectile est positive si le personnage regarde à droite
