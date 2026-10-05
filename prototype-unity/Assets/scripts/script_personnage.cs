@@ -2,17 +2,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class script_personnage : classe_personnage
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // S'exécute lors de l'initialisation du personnage
     protected override void Awake()
     {
         base.Awake();
     }
+    // S'exécute avant la première frame du jeu
     protected override void Start()
     { 
         base.Start();
     }
 
-    // Update is called once per frame
+    // S'exécute à chaque frame du jeu
     protected override void Update()
     {
         base.Update();

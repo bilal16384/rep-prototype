@@ -20,7 +20,7 @@ public class classe_projectile : classe_attaque
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    protected override void Start()
+    protected virtual void Start()
     {
         rb.gravityScale = gravitéProjectile; // définit la gravité du projectile
         rb = GetComponent<Rigidbody2D>();
@@ -32,7 +32,7 @@ public class classe_projectile : classe_attaque
     }
 
     // Update is called once per frame
-    protected override void Update()
+    protected virtual void Update()
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
     }

@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 [CreateAssetMenu(fileName = "données_joueurs", menuName = "Scriptable Objects/données_joueurs")]
-public class Données_joueurs : ScriptableObject
+public class Données_joueurs : ScriptableObject // Classe stockant les données des joueurs (touches de contrôle)
 {
-    //touches des joueurs
+    //touches des joueurs (clavier)
 
     //joueur 1
     public Key toucheDroite1 = Key.D;

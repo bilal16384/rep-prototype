@@ -6,23 +6,23 @@ using UnityEngine.SceneManagement;
 public class manager_menu : MonoBehaviour
 {
     //attributs
-    [SerializeField] GameObject panelMenuPersonnages;
+    [SerializeField] GameObject panelMenuPersonnages; // Référence au panneau du menu des personnages
 
     //touches
-    [SerializeField] private Key toucheQuitter;
-    [SerializeField] private Key toucheJouer;
+    [SerializeField] private Key toucheQuitter; // Touche pour quitter le jeu ou revenir au menu précédent
+    [SerializeField] private Key toucheJouer; // Touche pour activer le menu des personnages
 
     //variables de partie
 
-    private int personnageJoueur1;
-    private int personnageJoueur2;
-    void Start()
+    private int personnageJoueur1; // Stocke le personnage sélectionné par le joueur 1
+    private int personnageJoueur2; // Stocke le personnage sélectionné par le joueur 2
+    void Start() // Initialisation du menu au démarrage du jeu
     {
         désactiverMenupersonnages();
         donnéesDePartie.Instance.réinitialiserDonnées(); // Réinitialise les données de la partie au démarrage du menu
     }
 
-    void Update()
+    void Update() // Vérifie les entrées clavier à chaque frame pour gérer le menu
     {
         Keyboard clavier = Keyboard.current;
         if (clavier != null)
@@ -47,19 +47,19 @@ public class manager_menu : MonoBehaviour
 
 
     //méthodes pour gérer le menu des personnages
-    public void quitterJeu() //fonction qui sera appelée quand le bouton Quitter est déclenché
+    public void quitterJeu() // Fonction qui sera appelée quand le bouton Quitter est déclenché
     {
         Debug.Log("Fermeture du jeu"); //sert à montrer que le jeu se ferme pendant les tests
         
         Application.Quit(); //quitte le jeu
     }
 
-    public void activerMenuPersonnages() //fonction qui sera appelée quand le bouton Jouer est déclenché
+    public void activerMenuPersonnages() // Fonction qui sera appelée quand le bouton Jouer est déclenché
     {
         panelMenuPersonnages.SetActive(true);
         Debug.Log("menu des personnages activé");
     }
-    public void désactiverMenupersonnages()
+    public void désactiverMenupersonnages() // Désactive le menu des personnages et réinitialise les sélections
     {
         panelMenuPersonnages.SetActive(false);
         Debug.Log("menu des personnages désactivé");
@@ -67,21 +67,18 @@ public class manager_menu : MonoBehaviour
         personnageJoueur2 = -1; // réinitialise le personnage du joueur 2
     }
 
-    public void selectionnerPersonnageJoueur1(int personnage) //fonction pour sélectionner le personnage du joueur 1
+    public void selectionnerPersonnageJoueur1(int personnage) // Fonction pour sélectionner le personnage du joueur 1
     {
         personnageJoueur1 = personnage;
-        Debug.Log("Personnage joueur 1 sélectionné : " + personnageJoueur1);
     }
 
-    public void selectionnerPersonnageJoueur2(int personnage) //fonction pour sélectionner le personnage du joueur 2
+    public void selectionnerPersonnageJoueur2(int personnage) // Fonction pour sélectionner le personnage du joueur 2
     {
         personnageJoueur2 = personnage;
-        Debug.Log("Personnage joueur 2 sélectionné : " + personnageJoueur2);
     }
 
-    public void démarrerPartie()
+    public void démarrerPartie() // Démarre la partie si les deux personnages ont été sélectionnés
     {
-        Debug.Log("Partie démarrée avec les personnages : Joueur 1 - " + personnageJoueur1 + ", Joueur 2 - " + personnageJoueur2);
         if (personnageJoueur1 != -1 && personnageJoueur2 != -1) // vérifie si les deux personnages ont été sélectionnés
         {
             donnéesDePartie.Instance.définirPersonnagesChoisis(personnageJoueur1, personnageJoueur2);

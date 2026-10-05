@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class script_attaque_base_1 : classe_attaque_base
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    protected override void Start()
+    // Appelé au démarrage du script, avant la première mise à jour
+    protected override void Start() 
     {
         base.Start();
     }
 
-    // Update is called once per frame
+    // Appelé à chaque frame
     protected override void Update()
     {
         base.Update();

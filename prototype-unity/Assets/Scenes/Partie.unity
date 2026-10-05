@@ -304,6 +304,8 @@ MonoBehaviour:
   imageGagnant: {fileID: 244301583}
   nomGagnant: {fileID: 1993267659}
   titreGagnant: {fileID: 0}
+  nomJoueur1: Joueur 1
+  nomJoueur2: Joueur 2
   "donn\xE9es_joueurs": {fileID: 11400000, guid: 3331fa54506ac974ca70b9b69df675d3, type: 2}
   personnage1: {fileID: 2173484911246793587, guid: fe513745a9e995841ae999dda959713c, type: 3}
   personnage2: {fileID: 4424969506293098817, guid: 58b18410376ec084abe2e1767146c5a0, type: 3}
@@ -4605,7 +4607,6 @@ GameObject:
   - component: {fileID: 1976735309}
   - component: {fileID: 1976735311}
   - component: {fileID: 1976735310}
-  - component: {fileID: 1976735312}
   m_Layer: 5
   m_Name: Menu fin de partie
   m_TagString: Untagged
@@ -4674,19 +4675,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1976735308}
   m_CullTransparentMesh: 1
---- !u!114 &1976735312
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1976735308}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12c667c360d17844c8a6ce5e0388d144, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  menuFinDePartie: {fileID: 0}
 --- !u!1 &1993267657
 GameObject:
   m_ObjectHideFlags: 0
