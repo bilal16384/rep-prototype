@@ -18,4 +18,10 @@ public class script_personnage : classe_personnage
     {
         base.Update();
     }
+
+    // S'exécute à chaque frame physique
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+    }
 }

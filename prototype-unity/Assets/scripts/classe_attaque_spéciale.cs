@@ -13,7 +13,7 @@ public class classe_attaque_spéciale : classe_attaque
     protected bool enAttaqueSpéciale = false; // Indique si le personnage est actuellement en attaque spéciale
 
     //script du personnage
-    protected classe_personnage scriptPersonnage; // Référence au script du personnage parent
+
 
     protected override void Awake() // Méthode appelée lors de l'initialisation du script, avant Start()
     {
@@ -26,7 +26,7 @@ public class classe_attaque_spéciale : classe_attaque
         scriptVisuelJoueur = scriptPersonnage.récupérerScriptVisuelJoueur();
         this.gameObject.layer = transform.parent.gameObject.layer; // Assigne le layer du GameObject de l'attaque au même layer que le parent (personnage)
         enAttaqueSpéciale = false;
-        tempsDernièreAttaqueSpéciale = -(rechargeAttaqueSpéciale); // permet d'attaquer dès le début du jeu
+        tempsDernièreAttaqueSpéciale = -rechargeAttaqueSpéciale; // permet d'attaquer dès le début du jeu
         if(layerPersonnageEnnemi == 0)
         {
             définirLayerPersonnageEnnemi(gameObject.layer); // Définit le layer du personnage ennemi en fonction du layer du personnage actuel
@@ -53,6 +53,44 @@ public class classe_attaque_spéciale : classe_attaque
     }
 
 
+    protected virtual void génererProjectile
+    (GameObject projectile, 
+    Vector3 position, 
+    float vitesseX, float vitesseY, 
+    int dégâts, 
+    float gravité = 0f, 
+    float pourcentageAffaiblissement = 0f, 
+    float duréeAffaiblissement = 0f, 
+    float pourcentageRalenti = 0f, 
+    float duréeRalenti = 0f, 
+    Key toucheActivation = Key.None)
+    {
+        // Instancie le projectile à la position spécifiée sans rotation
+        GameObject nouveauProjectile = Instantiate(projectile, position, Quaternion.identity); 
+        classe_projectile scriptProjectile = nouveauProjectile.GetComponent<classe_projectile>(); // Récupère le script classe_projectile attaché au nouveau projectile
+        if (scriptProjectile != null)
+        {
+            scriptProjectile.initialiserProjectile // Appelle la méthode d'initialisation du projectile avec les paramètres spécifiés
+            (
+                position, 
+                vitesseX, 
+                vitesseY, 
+                dégâts, 
+                layerPersonnageEnnemi, 
+                gravité, 
+                pourcentageAffaiblissement, 
+                duréeAffaiblissement, 
+                pourcentageRalenti, 
+                duréeRalenti,
+                toucheActivation
+            );
+
+        }
+        else
+        {
+            Debug.LogError("Le GameObject n'a pas de script_projectile_attaque_spéciale attaché.");
+        }
+    }
 
 
 
@@ -70,25 +108,6 @@ public class classe_attaque_spéciale : classe_attaque
     public virtual void assignerTouches(Key toucheAttaqueSpéciale) // Méthode pour assigner la touche de l'attaque spéciale
     {
         this.toucheAttaqueSpeciale = toucheAttaqueSpéciale; // Assigne la touche de l'attaque spéciale
-    }
-
-    protected virtual float obtenirDégâts(float dégâts) // Calcule les dégâts après application des réductions éventuelles du personnage
-    {
-        if (scriptPersonnage == null) // Vérifie si le script du personnage est assigné
-        {
-            Debug.LogError("Le script du personnage n'est pas assigné dans " + gameObject.name);
-            return dégâts; // Retourne les dégâts d'origine si le script du personnage n'est pas assigné ou inexistant
-        }
-        pourcentageRéduction = scriptPersonnage.obtenirEstAffaibli(); // Obtient le pourcentage de réduction des dégâts du personnage
-        if (pourcentageRéduction > 0f) // Vérifie si une réduction est applicable
-        {
-            float dégâtsRéduits = dégâts * (1f - pourcentageRéduction); // Calcule les dégâts après réduction
-            return dégâtsRéduits; // Retourne les dégâts réduits
-        }
-        else // Si aucune réduction n'est applicable
-        {
-            return dégâts; // Retourne les dégâts d'origine si aucune réduction n'est applicable
-        }
     }
 
 }

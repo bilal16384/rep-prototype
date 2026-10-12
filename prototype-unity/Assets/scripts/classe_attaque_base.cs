@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,8 +23,7 @@ public class classe_attaque_base : classe_attaque
     
 
 
-    // Référence au script du personnage
-    protected classe_personnage scriptPersonnage;
+
 
 
 
@@ -44,14 +42,14 @@ public class classe_attaque_base : classe_attaque
         scriptVisuelJoueur = scriptPersonnage.récupérerScriptVisuelJoueur();
         this.gameObject.layer = transform.parent.gameObject.layer; // Assigne le layer du GameObject de l'attaque au même layer que le parent (personnage)
         enAttaque = false;
-        tempsDernièreAttaque = -(rechargeAttaqueBase); // permet d'attaquer dès le début du jeu
+        tempsDernièreAttaque = -rechargeAttaqueBase; // permet d'attaquer dès le début du jeu
         if(layerPersonnageEnnemi == 0)
         {
             définirLayerPersonnageEnnemi(gameObject.layer); // Définit le layer du personnage ennemi en fonction du layer du personnage actuel
         }
     }
 
-    // Update is called once per frame
+    
     protected virtual void Update() // Appelé une fois par frame
     {
         Keyboard clavier = Keyboard.current; // Récupère le clavier actuel
@@ -99,7 +97,7 @@ public class classe_attaque_base : classe_attaque
         {
             GameObject cible = collision.gameObject; // Récupère le GameObject de la cible avec laquelle le collider est en contact
                 
-            if (infligerDégâts(cible, dégâtsAttaqueBase)) // Tente d'infliger des dégâts à la cible
+            if (infligerDégâts(cible, obtenirDégâts(dégâtsAttaqueBase))) // Tente d'infliger des dégâts à la cible
             {
                 finAttaqueBase(); // Fin de l'attaque après avoir infligé des dégâts à la cible :)
             }
@@ -111,25 +109,8 @@ public class classe_attaque_base : classe_attaque
 
 
   
+    
 
-    protected virtual float obtenirDégâts(float dégâts) // Calcule les dégâts après application des réductions éventuelles du personnage
-    {
-        if (scriptPersonnage == null) // Vérifie si le script du personnage est assigné
-        {
-            Debug.LogError("Le script du personnage n'est pas assigné dans " + gameObject.name);
-            return dégâts; // Retourne les dégâts d'origine si le script du personnage n'est pas assigné ou inexistant
-        }
-        pourcentageRéduction = scriptPersonnage.obtenirEstAffaibli(); // Obtient le pourcentage de réduction des dégâts du personnage
-        if (pourcentageRéduction > 0f) // Vérifie si une réduction est applicable
-        {
-            float dégâtsRéduits = dégâts * (1f - pourcentageRéduction); // Calcule les dégâts après réduction
-            return dégâtsRéduits; // Retourne les dégâts réduits
-        }
-        else // Si aucune réduction n'est applicable
-        {
-            return dégâts; // Retourne les dégâts d'origine si aucune réduction n'est applicable
-        }
-    }
 
 
 

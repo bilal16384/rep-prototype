@@ -62,7 +62,7 @@ public class script_GameManager : MonoBehaviour
     [SerializeField] protected Vector3 positionRéapparition; // Position de réapparition des personnages après leur élimination
 
     //attribus de partie
-    protected int duréePartie = 120; // Durée de la partie en secondes
+    [SerializeField] protected int duréePartie = 120; // Durée de la partie en secondes
     protected float tempsRestant; // Temps restant de la partie en secondes
     protected int tempsAffiché;
     protected bool enElimination = false; // Indique si la partie est en phase d'élimination après le temps imparti

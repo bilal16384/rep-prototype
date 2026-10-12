@@ -63,6 +63,10 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
     protected bool estEnSaut = false; // Indique si le personnage est actuellement en train de sauter
     protected int sautRestant = 1; // Nombre de sauts restants (1 pour un double saut) :)
     protected bool peutBouger = true; // Variable pour contrôler si le personnage peut bouger ou non
+    protected float moveX; // Variable pour stocker le mouvement horizontal du personnage
+    protected bool doitSauter = false; // Indique si le personnage doit sauter
+    protected bool doitDoubleSauter = false; // Indique si le personnage doit effectuer un double saut
+    protected bool doitDashBas = false; // Indique si le personnage doit effectuer un dash vers le bas
 
     //ralentissement
     protected float estRalenti = 0f; // Variable pour contrôler à quel point le personnage est ralenti (0 = pas ralenti, 1 = complètement ralenti)
@@ -100,7 +104,7 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
     }
     protected virtual void Start() // Start est appelé avant la première image, seulement si le script est activé
     {
-        transform.position = positionDépart;   // Position de départ à défiir selon les règles...
+        transform.position = positionDépart;  // Déplacement initial du personnage à la position de départ
         pointsVieActuels = pointsVieMax; // Initialise les points de vie actuels à la valeur maximale
         estMort = false; // Initialise l'état de mort du personnage à false
         longueurSaut = valeur_longueurSaut; // Initialise la longueur du saut à la valeur définie
@@ -111,6 +115,14 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
 
     protected virtual void Update() // Update est appelé à chaque frame, seulement si le script est activé
     {
+
+
+        // détection du sol
+        if (detectersol()) // Vérifie si le personnage touche le sol
+        {
+            sautRestant = 1; // Réinitialise le nombre de sauts restants lorsqu'il touche le sol
+            peutBouger = true; // Permet au personnage de bouger lorsqu'il touche le sol
+        }
         Keyboard clavier = Keyboard.current;
         
         // Vérifie si le clavier est disponible avant de lire les entrées
@@ -121,27 +133,11 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
             //déplacement horizontal
 
             //modifie la valeur de la vitesse horizontale en fonction des touches pressées
-            float moveX = 0;
+            moveX = 0;
             if (clavier[toucheDroite].isPressed) moveX = 1;
             if (clavier[toucheGauche].isPressed) moveX = -1;
             
-            //applique la vitesse horizontale au personnage en tenant compte de l'état ralenti
-            if (peutBouger && !enElimination)
-            {
-                rb.linearVelocity = new UnityEngine.Vector2
-                (
-                    moveX * vitesse * (1 - estRalenti), 
-                    rb.linearVelocity.y
-                ); 
-            }
-            else
-            {
-                rb.linearVelocity = new UnityEngine.Vector2(rb.linearVelocity.x, rb.linearVelocity.y); // Empêche le personnage de bouger pendant le double saut ou lorsqu'il est en élimination
-                if (detectersol())
-                {
-                    peutBouger = true; // Permet au personnage de bouger à nouveau lorsqu'il touche le sol
-                }
-            }
+
             
             //calcul de la vitesse actuelle pour l'animation (valeur absolue de la vitesse horizontale)
             float vitesseActuelle = Mathf.Abs(rb.linearVelocity.x); // Calcule la vitesse actuelle pour l'animation (valeur absolue de la vitesse horizontale)
@@ -178,74 +174,61 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
             if (moveX > 0 && !regardeDroite) // Vérifie si le personnage se déplace vers la droite alors qu'il ne regarde pas dans cette direction
             {
                 regardeDroite = true;
-                transform.localScale = new UnityEngine.Vector3(1, 1, 1);
+                transform.localScale = new UnityEngine.Vector3(1, 1, 1); // Réinitialise l'échelle du personnage lorsqu'il regarde à droite pour le faire regarder devant
                 nomTexte.transform.localScale = new UnityEngine.Vector3(1, 1, 1); // Réinitialise le texte du nom à sa taille normale lorsque le personnage regarde à droite
             }
             else if (moveX < 0 && regardeDroite) // Vérifie si le personnage se déplace vers la gauche alors qu'il regarde dans la direction opposée
             {
                 regardeDroite = false;
-                transform.localScale = new UnityEngine.Vector3(-1, 1, 1);
+                transform.localScale = new UnityEngine.Vector3(-1, 1, 1); // Inverse l'échelle du personnage lorsqu'il regarde à gauche pour le faire regarder derrière
                 nomTexte.transform.localScale = new UnityEngine.Vector3(-1, 1, 1); // Inverse le texte du nom pour le garder à l'endroit lorsque le personnage regarde à gauche
             }
 
 
 
 
-            // saut
-            if (detectersol()) // Vérifie si le personnage touche le sol
-            {
-                sautRestant = 1; // Réinitialise le nombre de sauts restants lorsqu'il touche le sol
-                peutBouger = true; // Permet au personnage de bouger lorsqu'il touche le sol
-            }
 
-            if (clavier[toucheSaut].wasPressedThisFrame) // Vérifie si la touche de saut a été pressée ce frame
+
+            if (clavier[toucheSaut].wasPressedThisFrame && !enElimination) // Vérifie si la touche de saut a été pressée ce frame
             {
-                if (detectersol() && !enElimination) // Vérifie si le personnage touche le sol et n'est pas en élimination
+                if (detectersol()) // Vérifie si le personnage touche le sol et n'est pas en élimination
                 {
-                    rb.linearVelocity = new UnityEngine.Vector2(rb.linearVelocity.x, forceSaut);
-                    estEnSaut = true;
-                    
+                    doitSauter = true; // Indique que le personnage doit sauter dans la prochaine frame physique
                 }
                 else if (sautRestant > 0) // Vérifie si le personnage a des sauts restants pour effectuer un double saut
                 {
-                    rb.linearVelocity = new UnityEngine.Vector2((System.Convert.ToInt32(regardeDroite) * 2 - 1) * vitesse * (1- estRalenti), forceSaut * 0.5f); // Applique la vitesse horizontale en fonction de la direction du personnage
-                    peutBouger = false; // Empêche le personnage de bouger pendant le double saut
-                    sautRestant--; // Décrémente le nombre de sauts restants
+                    doitDoubleSauter = true; // Indique que le personnage doit effectuer un double saut dans la prochaine frame physique
                 }
             }
             //dash vers le bas
-            if(clavier[toucheDashBas].wasPressedThisFrame && !enElimination) // Vérifie si la touche de dash vers le bas a été pressée et que le personnage n'est pas en élimination
+            if(clavier[toucheDashBas].wasPressedThisFrame && !enElimination && detectersol() == false) // Vérifie si la touche de dash vers le bas a été pressée et que le personnage n'est pas en élimination et qu'il est en l'air
             {
-                if(detectersol() == false) // Vérifie que le personnage soit en l'air avant d'effectuer le dash vers le bas
-                {
-                    peutBouger = true; // Permet au personnage de bouger à nouveau après le dash vers le bas
-                    rb.linearVelocity = new UnityEngine.Vector2(rb.linearVelocity.x, -forceSaut);
-                }
-
-
-
+                doitDashBas = true; // Indique que le personnage doit effectuer un dash vers le bas
             }
 
 
             
             //Prolongation du premier saut si la touche de saut est maintenue enfoncée
-            if (estEnSaut == true && clavier [toucheSaut].isPressed && peutBouger == true && !enElimination) // vérifie si le personnage est en train de sauter, si la touche de saut est maintenue enfoncée, si le personnage peut bouger et s'il n'est pas en élimination
+            if (estEnSaut == true) // vérifie si le personnage est en train de sauter
             {
-                rb.linearVelocity = new UnityEngine.Vector2(rb.linearVelocity.x, forceSaut); // Applique la vitesse verticale pour prolonger le saut
-                longueurSaut -= Time.deltaTime; // Réduit la durée restante du saut prolongé en fonction du temps écoulé
-                if (longueurSaut <= 0)
+                if (clavier [toucheSaut].isPressed && !enElimination) //vérifie si la touche de saut est maintenue enfoncée et s'il n'est pas en élimination
                 {
+                    doitSauter = true; // Indique que le personnage doit continuer à sauter dans la prochaine frame physique
+                    longueurSaut -= Time.deltaTime; // Réduit la durée restante du saut prolongé en fonction du temps écoulé
+                    if (longueurSaut <= 0)
+                    {
+                        doitSauter = false; // Indique que le personnage ne doit plus continuer à sauter
+                        estEnSaut = false; // Indique que le personnage n'est plus en train de sauter
+                        longueurSaut = valeur_longueurSaut; // Réinitialise la durée du saut prolongé
+                    }
+                }
+                else // Si la touche de saut n'est pas maintenue enfoncée, arrête le saut prolongé
+                {
+                    doitSauter = false; // Indique que le personnage ne doit plus continuer à sauter
                     estEnSaut = false; // Indique que le personnage n'est plus en train de sauter
                     longueurSaut = valeur_longueurSaut; // Réinitialise la durée du saut prolongé
-                
                 }
             }
-            else if (estEnSaut == true && clavier[toucheSaut].wasReleasedThisFrame) // Vérifie si le personnage est en train de sauter et si la touche de saut a été relâchée ce frame
-            {
-                estEnSaut = false; // Indique que le personnage n'est plus en train de sauter
-                longueurSaut = valeur_longueurSaut; // Réinitialise la durée du saut prolongé
-            }
-            
             
             //tue le personnage si sa position est trop basse (au cas où il tombe du terrain)
             if(transform.position.y <= -20)
@@ -276,6 +259,49 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
 
         }    
     }
+    protected virtual void FixedUpdate() // Exécuté à chaque frame physique (0,02s par défaut)
+    {
+        //applique la vitesse horizontale au personnage en tenant compte de l'état ralenti
+        if (peutBouger && !enElimination)
+        {
+            rb.linearVelocity = new UnityEngine.Vector2
+            (
+                moveX * vitesse * (1 - estRalenti), 
+                rb.linearVelocity.y
+            );
+        }
+        else
+        {
+            rb.linearVelocity = new UnityEngine.Vector2(rb.linearVelocity.x, rb.linearVelocity.y); // Empêche le personnage de bouger pendant le double saut ou lorsqu'il est en élimination
+            if (detectersol())
+            {
+                peutBouger = true; // Permet au personnage de bouger à nouveau lorsqu'il touche le sol
+            }
+        }
+        // Application des actions de saut et de double saut
+        if (doitSauter)
+        {
+            rb.linearVelocity = new UnityEngine.Vector2(rb.linearVelocity.x, forceSaut);
+            estEnSaut = true;
+            doitSauter = false; // Réinitialise l'indicateur de saut
+        }
+        if (doitDoubleSauter)
+        {
+            rb.linearVelocity = new UnityEngine.Vector2((System.Convert.ToInt32(regardeDroite) * 2 - 1) * vitesse * (1- estRalenti), forceSaut * 0.5f); // Applique la vitesse horizontale en fonction de la direction du personnage
+            peutBouger = false; // Empêche le personnage de bouger pendant le double saut
+            sautRestant--; // Décrémente le nombre de sauts restants
+            doitDoubleSauter = false; // Réinitialise l'indicateur de double saut
+        }
+        // Application de l'action de dash vers le bas
+        if (doitDashBas)
+        {
+            peutBouger = true; // Permet au personnage de bouger à nouveau après le dash vers le bas
+            rb.linearVelocity = new UnityEngine.Vector2(rb.linearVelocity.x, -forceSaut);
+            doitDashBas = false; // Réinitialise l'indicateur de dash vers le bas
+        }
+    }
+
+
 
 
     //méthodes
@@ -323,11 +349,6 @@ public class classe_personnage : MonoBehaviour, In_prendre_dégâts
         if (pointsVieActuels <= 0 && !estMort)
         {
             mourir();
-            Debug.Log("Le personnage" + nom + " est mort." + " Points de vie actuels : " + pointsVieActuels);
-        }
-        else
-        {
-            Debug.Log("Points de vie actuels : " + pointsVieActuels);
         }
         scriptVisuelJoueur.MettreAJourBarreDeVie(pointsVieActuels, pointsVieMax);
     }

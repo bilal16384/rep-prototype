@@ -53,12 +53,10 @@ public class script_attaque_spéciale_1 : classe_attaque_spéciale
         }
         if (enAttaqueSpécialeProjectile)
         {
-            if (quantitéProjetilesRestante > 0)
-            {
-                tirerProjectiles(); // Tire les projectiles restants
-                finAttaqueSpéciale(); // Termine l'attaque spéciale après avoir tiré les projectiles
-            }
+            tirerProjectiles(); // Tire les projectiles restants
+            finAttaqueSpéciale(); // Termine l'attaque spéciale après avoir tiré les projectiles
         }
+        
     }
 
     
@@ -67,10 +65,10 @@ public class script_attaque_spéciale_1 : classe_attaque_spéciale
         //attaque spéciale coup
         if (enAttaqueSpécialeCoup)
         {
-            Debug.Log("Collision détectée avec : " + collision.gameObject.name + "enAttaqueSpécialeCoup : " + enAttaqueSpécialeCoup);
             if(collisionAvecEnnemi(collision)) // Vérifie si la collision est avec un ennemi
             {
-                if (infligerDégâts(collision.gameObject, dégâtsAttaqueSpécialeCoup)) // Vérifie si les dégâts ont été infligés avec succès
+                GameObject cible = collision.gameObject;
+                if (infligerDégâts(cible, obtenirDégâts(dégâtsAttaqueSpécialeCoup))) // Vérifie si les dégâts ont été infligés avec succès
                 {
                     finAttaqueSpéciale(); // Termine l'attaque spéciale après avoir infligé des dégâts avec le coup
                     Debug.Log("fin de l'attaque spéciale après avoir infligé des dégâts avec le coup.");
@@ -118,7 +116,7 @@ public class script_attaque_spéciale_1 : classe_attaque_spéciale
                 positionProjectile, 
                 vitesseProjectileX, 
                 vitesseProjectileYActuelle, 
-                dégâtsAttaqueSpécialeProjectile, 
+                obtenirDégâts(dégâtsAttaqueSpécialeProjectile), 
                 gravitéProjectile,
                 0,
                 0,

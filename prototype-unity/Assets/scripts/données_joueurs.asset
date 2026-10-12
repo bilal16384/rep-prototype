@@ -16,11 +16,11 @@ MonoBehaviour:
   toucheGauche1: 15
   toucheSaut1: 37
   toucheDashBas1: 33
-  toucheAttaqueBase1: 17
-  "toucheAttaqueSp\xE9ciale1": 36
+  toucheAttaqueBase1: 38
+  "toucheAttaqueSp\xE9ciale1": 17
   toucheDroite2: 26
   toucheGauche2: 24
   toucheSaut2: 23
   toucheDashBas2: 25
-  toucheAttaqueBase2: 28
-  "toucheAttaqueSp\xE9ciale2": 27
+  toucheAttaqueBase2: 27
+  "toucheAttaqueSp\xE9ciale2": 28

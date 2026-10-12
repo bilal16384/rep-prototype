@@ -20,26 +20,39 @@ public class script_bombe_magique : classe_projectile
         base.Start();
         layerPersonnageAllié = obtenirLayerEnnemi(layerPersonnageEnnemi); // Obtient le layer du personnage allié en fonction du layer du personnage ennemi
     }
-
-    // Update is called once per frame
-    protected override void Update() // Méthode appelée à chaque frame pour mettre à jour la bombe magique
+    
+    
+    void Update() // Exécuté à chaque frame pour vérifier l'activation de la bombe magique
     {
-        base.Update();
         Keyboard clavier = Keyboard.current; // Récupère l'état actuel du clavier
         if (clavier != null) // Vérifie si le clavier est disponible
         {
             if (clavier[toucheActivationProjectile].wasPressedThisFrame && Time.time - tempsLancement >= delaiExplosion) // Vérifie si la touche d'activation est pressée et si le délai d'explosion est écoulé avant d'exploser la bombe magique
             {
-                Debug.Log("Touche d'activation de la bombe magique pressée !");
                 exploserBombeMagique(); // Explose la bombe magique
             }
         }
     }
 
 
+
+
+    // Exécuté à chaque frame physique (0,02s par défaut) pour mettre à jour la bombe magique
+    protected override void FixedUpdate() // Méthode appelée à chaque frame pour mettre à jour la bombe magique
+    {
+        base.FixedUpdate();
+    }
+
+
+
     protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        if ((collision.gameObject.layer == LayerMask.NameToLayer("Terrain") || collision.gameObject.layer == layerPersonnageEnnemi) && !estExplosé) // Explose la bombe magique si elle touche le terrain ou un ennemi et qu'elle n'a pas encore explosé
+        if 
+        (
+            (collision.gameObject.layer == LayerMask.NameToLayer("Terrain") || 
+            collision.gameObject.layer == layerPersonnageEnnemi) && 
+            !estExplosé
+        ) // Explose la bombe magique si elle touche le terrain ou un ennemi et qu'elle n'a pas encore explosé
         {
             exploserBombeMagique();
         }
@@ -72,7 +85,6 @@ public class script_bombe_magique : classe_projectile
     protected void exploserBombeMagique() // Méthode pour gérer l'explosion de la bombe magique
     {
         estExplosé = true;
-        Debug.Log("La bombe magique a explosé !");
         Collider2D[] ciblesTouchées = Physics2D.OverlapCircleAll(transform.position, rayonExplosion, 1 << layerPersonnageEnnemi | 1 << layerPersonnageAllié); // Récupère tous les colliders des ennemis et des alliés dans le rayon d'explosion
         foreach (Collider2D cible in ciblesTouchées) // Parcourt tous les colliders touchés par l'explosion
         {

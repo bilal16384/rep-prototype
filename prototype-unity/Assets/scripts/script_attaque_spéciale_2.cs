@@ -7,8 +7,6 @@ public class script_attaque_spéciale_2 : classe_attaque_spéciale
     [SerializeField] protected float vitesseProjectileX; // Vitesse horizontale du projectile
     [SerializeField] protected float vitesseProjectileY; // Vitesse verticale du projectile
     [SerializeField] protected int dégâtsAttaqueSpécialeProjectile; // Dégâts infligés par le projectile
-    [SerializeField] protected float pourcentageAffaiblissementProjectile; // Pourcentage d'affaiblissement appliqué par le projectile
-    [SerializeField] protected float duréeAffaiblissementProjectile; // Durée de l'affaiblissement appliqué par le projectile
     [SerializeField] protected float rayonExplosionBombeMagique; // Rayon d'explosion de la bombe magique
     protected bool regardeDroite = true; // Variable pour déterminer la direction du personnage et donc des projectiles
     protected Vector3 positionProjectile; //position de départ du projectile
@@ -49,10 +47,10 @@ public class script_attaque_spéciale_2 : classe_attaque_spéciale
             positionProjectile, 
             vitesseProjectileX, 
             vitesseProjectileY, 
-            dégâtsAttaqueSpécialeProjectile, 
+            obtenirDégâts(dégâtsAttaqueSpécialeProjectile), 
             gravitéProjectile,
-            pourcentageAffaiblissementProjectile,
-            duréeAffaiblissementProjectile,
+            0,
+            0,
             0f,
             0f,
             toucheAttaqueSpeciale

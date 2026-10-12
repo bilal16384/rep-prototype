@@ -10,7 +10,7 @@ public class classe_projectile : classe_attaque
     protected int dégâtsProjectile;
     protected float vitesseProjectileY;
     protected float duréeVieProjectile = 5f; // Durée de vie par défaut du projectile en secondes
-    protected float gravitéProjectile = 0f; // Gravité par défaut du projectile A !!!! DÉFINIR !!!!
+    protected float gravitéProjectile = 0f; // Gravité par défaut du projectile 
     protected float pourcentageAffaiblissementProjectile = 0f; // Pourcentage d'affaiblissement par défaut du projectile
     protected float duréeAffaiblissementProjectile = 0f; // Durée d'affa
     protected float pourcentageRalentiProjectile = 0f; // Pourcentage de ralentissement par défaut du projectile
@@ -19,7 +19,7 @@ public class classe_projectile : classe_attaque
     protected Key toucheActivationProjectile;
 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Appelé une fois au début, avant la première exécution de Update
     protected virtual void Start()
     {
         rb.gravityScale = gravitéProjectile; // définit la gravité du projectile
@@ -31,8 +31,8 @@ public class classe_projectile : classe_attaque
         transform.position = positionDépart;
     }
 
-    // Update is called once per frame
-    protected virtual void Update()
+    // Exécuté à chaque frame physique (0,02s par défaut)
+    protected virtual void FixedUpdate()
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y);
     }
@@ -80,8 +80,7 @@ public class classe_projectile : classe_attaque
         duréeAffaiblissementProjectile = duréeAffaiblissement;
         pourcentageRalentiProjectile = pourcentageRalenti;
         duréeRalentiProjectile = duréeRalenti;
-        toucheActivationProjectile = toucheActivation;
-        
+        toucheActivationProjectile = toucheActivation; 
     }
 
     

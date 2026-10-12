@@ -2,6 +2,11 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class classe_attaque : MonoBehaviour // Classe de base pour les attaques utilisée par la classe projectile et les classes d'attaque basique et spéciale
 {
+
+
+
+    // Référence au script du personnage
+    protected classe_personnage scriptPersonnage;
     //attributs des attaques
     protected LayerMask layerPersonnageEnnemi = 0; // Layer du personnage ennemi, à définir dans les classes héritières
     protected float pourcentageRéduction = 0f; // Variable pour stocker le pourcentage de réduction des dégâts
@@ -105,51 +110,30 @@ public class classe_attaque : MonoBehaviour // Classe de base pour les attaques 
 
 
 
-    protected virtual void génererProjectile
-    (GameObject projectile, 
-    Vector3 position, 
-    float vitesseX, float vitesseY, 
-    int dégâts, 
-    float gravité = 0f, 
-    float pourcentageAffaiblissement = 0f, 
-    float duréeAffaiblissement = 0f, 
-    float pourcentageRalenti = 0f, 
-    float duréeRalenti = 0f, 
-    Key toucheActivation = Key.None)
-    {
-        // Instancie le projectile à la position spécifiée sans rotation
-        GameObject nouveauProjectile = Instantiate(projectile, position, Quaternion.identity); 
-        classe_projectile scriptProjectile = nouveauProjectile.GetComponent<classe_projectile>(); // Récupère le script classe_projectile attaché au nouveau projectile
-        if (scriptProjectile != null)
-        {
-            scriptProjectile.initialiserProjectile // Appelle la méthode d'initialisation du projectile avec les paramètres spécifiés
-            (
-                position, 
-                vitesseX, 
-                vitesseY, 
-                dégâts, 
-                layerPersonnageEnnemi, 
-                gravité, 
-                pourcentageAffaiblissement, 
-                duréeAffaiblissement, 
-                pourcentageRalenti, 
-                duréeRalenti,
-                toucheActivation
-            );
 
-        }
-        else
-        {
-            Debug.LogError("Le GameObject n'a pas de script_projectile_attaque_spéciale attaché.");
-        }
-    }
     public virtual void mettreEnElimination() // Méthode publique pour mettre le personnage en élimination
     {
         enElimination = true;
     }
 
     
-
+    protected virtual int obtenirDégâts(int dégâts) // Calcule les dégâts après application des réductions éventuelles du personnage
+    {
+        if (scriptPersonnage == null) // Vérifie si le script du personnage est assigné
+        {
+            return dégâts; // Retourne les dégâts d'origine si le script du personnage n'est pas assigné ou inexistant
+        }
+        pourcentageRéduction = scriptPersonnage.obtenirEstAffaibli(); // Obtient le pourcentage de réduction des dégâts du personnage
+        if (pourcentageRéduction > 0f) // Vérifie si une réduction est applicable
+        {
+            int dégâtsRéduits = Mathf.RoundToInt(dégâts * (1f - pourcentageRéduction)); // Calcule les dégâts après réduction
+            return dégâtsRéduits; // Retourne les dégâts réduits
+        }
+        else // Si aucune réduction n'est applicable
+        {
+            return dégâts; // Retourne les dégâts d'origine si aucune réduction n'est applicable
+        }
+    }
 
 
 }
